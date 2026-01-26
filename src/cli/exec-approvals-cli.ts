@@ -229,18 +229,18 @@ export function registerExecApprovalsCli(program: Command) {
   const approvals = program
     .command("approvals")
     .alias("exec-approvals")
-    .description("Manage exec approvals (gateway or node host)")
+    .description("管理执行审批（网关或节点主机）")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/approvals", "docs.clawd.bot/cli/approvals")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/approvals", "docs.clawd.bot/cli/approvals")}\n`,
     );
 
   const getCmd = approvals
     .command("get")
-    .description("Fetch exec approvals snapshot")
-    .option("--node <node>", "Target node id/name/IP")
-    .option("--gateway", "Force gateway approvals", false)
+    .description("获取执行审批快照")
+    .option("--node <node>", "目标节点 ID/名称/IP")
+    .option("--gateway", "强制网关审批", false)
     .action(async (opts: ExecApprovalsCliOpts) => {
       try {
         const { snapshot, nodeId, source } = await loadSnapshotTarget(opts);
@@ -265,11 +265,11 @@ export function registerExecApprovalsCli(program: Command) {
 
   const setCmd = approvals
     .command("set")
-    .description("Replace exec approvals with a JSON file")
-    .option("--node <node>", "Target node id/name/IP")
-    .option("--gateway", "Force gateway approvals", false)
-    .option("--file <path>", "Path to JSON file to upload")
-    .option("--stdin", "Read JSON from stdin", false)
+    .description("用 JSON 文件替换执行审批")
+    .option("--node <node>", "目标节点 ID/名称/IP")
+    .option("--gateway", "强制网关审批", false)
+    .option("--file <path>", "要上传的 JSON 文件路径")
+    .option("--stdin", "从 stdin 读取 JSON", false)
     .action(async (opts: ExecApprovalsCliOpts) => {
       try {
         if (!opts.file && !opts.stdin) {
@@ -321,7 +321,7 @@ export function registerExecApprovalsCli(program: Command) {
 
   const allowlist = approvals
     .command("allowlist")
-    .description("Edit the per-agent allowlist")
+    .description("编辑每个智能体的允许列表")
     .addHelpText(
       "after",
       () =>
@@ -342,10 +342,10 @@ export function registerExecApprovalsCli(program: Command) {
 
   const allowlistAdd = allowlist
     .command("add <pattern>")
-    .description("Add a glob pattern to an allowlist")
-    .option("--node <node>", "Target node id/name/IP")
-    .option("--gateway", "Force gateway approvals", false)
-    .option("--agent <id>", 'Agent id (defaults to "*")')
+    .description("向允许列表添加 glob 模式")
+    .option("--node <node>", "目标节点 ID/名称/IP")
+    .option("--gateway", "强制网关审批", false)
+    .option("--agent <id>", '智能体 ID（默认 "*"）')
     .action(async (pattern: string, opts: ExecApprovalsCliOpts) => {
       try {
         const trimmed = pattern.trim();
@@ -395,10 +395,10 @@ export function registerExecApprovalsCli(program: Command) {
 
   const allowlistRemove = allowlist
     .command("remove <pattern>")
-    .description("Remove a glob pattern from an allowlist")
-    .option("--node <node>", "Target node id/name/IP")
-    .option("--gateway", "Force gateway approvals", false)
-    .option("--agent <id>", 'Agent id (defaults to "*")')
+    .description("从允许列表删除 glob 模式")
+    .option("--node <node>", "目标节点 ID/名称/IP")
+    .option("--gateway", "强制网关审批", false)
+    .option("--agent <id>", '智能体 ID（默认 "*"）')
     .action(async (pattern: string, opts: ExecApprovalsCliOpts) => {
       try {
         const trimmed = pattern.trim();

@@ -333,19 +333,19 @@ export function formatSkillsCheck(report: SkillStatusReport, opts: SkillsCheckOp
 export function registerSkillsCli(program: Command) {
   const skills = program
     .command("skills")
-    .description("List and inspect available skills")
+    .description("列出和检查可用的技能")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/skills", "docs.clawd.bot/cli/skills")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/skills", "docs.clawd.bot/cli/skills")}\n`,
     );
 
   skills
     .command("list")
-    .description("List all available skills")
-    .option("--json", "Output as JSON", false)
-    .option("--eligible", "Show only eligible (ready to use) skills", false)
-    .option("-v, --verbose", "Show more details including missing requirements", false)
+    .description("列出所有可用技能")
+    .option("--json", "输出 JSON", false)
+    .option("--eligible", "仅显示符合条件（可使用）的技能", false)
+    .option("-v, --verbose", "显示更多详情，包括缺失的需求", false)
     .action(async (opts) => {
       try {
         const config = loadConfig();
@@ -360,9 +360,9 @@ export function registerSkillsCli(program: Command) {
 
   skills
     .command("info")
-    .description("Show detailed information about a skill")
-    .argument("<name>", "Skill name")
-    .option("--json", "Output as JSON", false)
+    .description("显示技能的详细信息")
+    .argument("<name>", "技能名称")
+    .option("--json", "输出 JSON", false)
     .action(async (name, opts) => {
       try {
         const config = loadConfig();
@@ -377,8 +377,8 @@ export function registerSkillsCli(program: Command) {
 
   skills
     .command("check")
-    .description("Check which skills are ready vs missing requirements")
-    .option("--json", "Output as JSON", false)
+    .description("检查哪些技能已就绪 vs 缺失需求")
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       try {
         const config = loadConfig();

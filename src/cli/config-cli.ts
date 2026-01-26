@@ -181,15 +181,15 @@ async function loadValidConfig() {
 export function registerConfigCli(program: Command) {
   const cmd = program
     .command("config")
-    .description("Config helpers (get/set/unset). Run without subcommand for the wizard.")
+    .description("配置工具 (get/set/unset)。无子命令时运行向导。")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/config", "docs.clawd.bot/cli/config")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/config", "docs.clawd.bot/cli/config")}\n`,
     )
     .option(
       "--section <section>",
-      "Configure wizard sections (repeatable). Use with no subcommand.",
+      "配置向导部分（可重复）。与无子命令配合使用。",
       (value: string, previous: string[]) => [...previous, value],
       [] as string[],
     )
@@ -220,9 +220,9 @@ export function registerConfigCli(program: Command) {
 
   cmd
     .command("get")
-    .description("Get a config value by dot path")
-    .argument("<path>", "Config path (dot or bracket notation)")
-    .option("--json", "Output JSON", false)
+    .description("通过点路径获取配置值")
+    .argument("<path>", "配置路径（点或括号表示法）")
+    .option("--json", "输出 JSON", false)
     .action(async (path: string, opts) => {
       try {
         const parsedPath = parsePath(path);
@@ -257,10 +257,10 @@ export function registerConfigCli(program: Command) {
 
   cmd
     .command("set")
-    .description("Set a config value by dot path")
-    .argument("<path>", "Config path (dot or bracket notation)")
-    .argument("<value>", "Value (JSON5 or raw string)")
-    .option("--json", "Parse value as JSON5 (required)", false)
+    .description("通过点路径设置配置值")
+    .argument("<path>", "配置路径（点或括号表示法）")
+    .argument("<value>", "值（JSON5 或原始字符串）")
+    .option("--json", "将值解析为 JSON5（必需）", false)
     .action(async (path: string, value: string, opts) => {
       try {
         const parsedPath = parsePath(path);
@@ -279,8 +279,8 @@ export function registerConfigCli(program: Command) {
 
   cmd
     .command("unset")
-    .description("Remove a config value by dot path")
-    .argument("<path>", "Config path (dot or bracket notation)")
+    .description("通过点路径删除配置值")
+    .argument("<path>", "配置路径（点或括号表示法）")
     .action(async (path: string) => {
       try {
         const parsedPath = parsePath(path);

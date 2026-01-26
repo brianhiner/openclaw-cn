@@ -94,19 +94,19 @@ function logSlotWarnings(warnings: string[]) {
 export function registerPluginsCli(program: Command) {
   const plugins = program
     .command("plugins")
-    .description("Manage Clawdbot plugins/extensions")
+    .description("管理 Clawdbot 插件/扩展")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/plugins", "docs.clawd.bot/cli/plugins")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/plugins", "docs.clawd.bot/cli/plugins")}\n`,
     );
 
   plugins
     .command("list")
-    .description("List discovered plugins")
-    .option("--json", "Print JSON")
-    .option("--enabled", "Only show enabled plugins", false)
-    .option("--verbose", "Show detailed entries", false)
+    .description("列出发现的插件")
+    .option("--json", "输出 JSON")
+    .option("--enabled", "仅显示已启用的插件", false)
+    .option("--verbose", "显示详细条目", false)
     .action((opts: PluginsListOptions) => {
       const report = buildPluginStatusReport();
       const list = opts.enabled
@@ -177,9 +177,9 @@ export function registerPluginsCli(program: Command) {
 
   plugins
     .command("info")
-    .description("Show plugin details")
-    .argument("<id>", "Plugin id")
-    .option("--json", "Print JSON")
+    .description("显示插件详情")
+    .argument("<id>", "插件 ID")
+    .option("--json", "输出 JSON")
     .action((id: string, opts: PluginInfoOptions) => {
       const report = buildPluginStatusReport();
       const plugin = report.plugins.find((p) => p.id === id || p.name === id);
@@ -242,8 +242,8 @@ export function registerPluginsCli(program: Command) {
 
   plugins
     .command("enable")
-    .description("Enable a plugin in config")
-    .argument("<id>", "Plugin id")
+    .description("在配置中启用插件")
+    .argument("<id>", "插件 ID")
     .action(async (id: string) => {
       const cfg = loadConfig();
       let next: ClawdbotConfig = {
@@ -268,8 +268,8 @@ export function registerPluginsCli(program: Command) {
 
   plugins
     .command("disable")
-    .description("Disable a plugin in config")
-    .argument("<id>", "Plugin id")
+    .description("在配置中禁用插件")
+    .argument("<id>", "插件 ID")
     .action(async (id: string) => {
       const cfg = loadConfig();
       const next = {
@@ -291,9 +291,9 @@ export function registerPluginsCli(program: Command) {
 
   plugins
     .command("install")
-    .description("Install a plugin (path, archive, or npm spec)")
-    .argument("<path-or-spec>", "Path (.ts/.js/.zip/.tgz/.tar.gz) or an npm package spec")
-    .option("-l, --link", "Link a local path instead of copying", false)
+    .description("安装插件（路径、归档或 npm 规范）")
+    .argument("<path-or-spec>", "路径 (.ts/.js/.zip/.tgz/.tar.gz) 或 npm 包规范")
+    .option("-l, --link", "链接本地路径而不是复制", false)
     .action(async (raw: string, opts: { link?: boolean }) => {
       const resolved = resolveUserPath(raw);
       const cfg = loadConfig();
@@ -447,10 +447,10 @@ export function registerPluginsCli(program: Command) {
 
   plugins
     .command("update")
-    .description("Update installed plugins (npm installs only)")
-    .argument("[id]", "Plugin id (omit with --all)")
-    .option("--all", "Update all tracked plugins", false)
-    .option("--dry-run", "Show what would change without writing", false)
+    .description("更新已安装的插件（仅 npm 安装）")
+    .argument("[id]", "插件 ID（与 --all 配合时省略）")
+    .option("--all", "更新所有跟踪的插件", false)
+    .option("--dry-run", "显示会发生的更改但不写入", false)
     .action(async (id: string | undefined, opts: PluginUpdateOptions) => {
       const cfg = loadConfig();
       const installs = cfg.plugins?.installs ?? {};
@@ -495,7 +495,7 @@ export function registerPluginsCli(program: Command) {
 
   plugins
     .command("doctor")
-    .description("Report plugin load issues")
+    .description("报告插件加载问题")
     .action(() => {
       const report = buildPluginStatusReport();
       const errors = report.plugins.filter((p) => p.status === "error");

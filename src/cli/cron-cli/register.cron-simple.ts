@@ -10,9 +10,9 @@ export function registerCronSimpleCommands(cron: Command) {
       .command("rm")
       .alias("remove")
       .alias("delete")
-      .description("Remove a cron job")
-      .argument("<id>", "Job id")
-      .option("--json", "Output JSON", false)
+      .description("删除定时任务")
+      .argument("<id>", "任务 ID")
+      .option("--json", "输出 JSON", false)
       .action(async (id, opts) => {
         try {
           const res = await callGatewayFromCli("cron.remove", opts, { id });
@@ -27,8 +27,8 @@ export function registerCronSimpleCommands(cron: Command) {
   addGatewayClientOptions(
     cron
       .command("enable")
-      .description("Enable a cron job")
-      .argument("<id>", "Job id")
+      .description("启用定时任务")
+      .argument("<id>", "任务 ID")
       .action(async (id, opts) => {
         try {
           const res = await callGatewayFromCli("cron.update", opts, {
@@ -47,8 +47,8 @@ export function registerCronSimpleCommands(cron: Command) {
   addGatewayClientOptions(
     cron
       .command("disable")
-      .description("Disable a cron job")
-      .argument("<id>", "Job id")
+      .description("禁用定时任务")
+      .argument("<id>", "任务 ID")
       .action(async (id, opts) => {
         try {
           const res = await callGatewayFromCli("cron.update", opts, {
@@ -67,9 +67,9 @@ export function registerCronSimpleCommands(cron: Command) {
   addGatewayClientOptions(
     cron
       .command("runs")
-      .description("Show cron run history (JSONL-backed)")
-      .requiredOption("--id <id>", "Job id")
-      .option("--limit <n>", "Max entries (default 50)", "50")
+      .description("显示定时任务运行历史（JSONL 支持）")
+      .requiredOption("--id <id>", "任务 ID")
+      .option("--limit <n>", "最大条目数（默认 50）", "50")
       .action(async (opts) => {
         try {
           const limitRaw = Number.parseInt(String(opts.limit ?? "50"), 10);
@@ -90,9 +90,9 @@ export function registerCronSimpleCommands(cron: Command) {
   addGatewayClientOptions(
     cron
       .command("run")
-      .description("Run a cron job now (debug)")
-      .argument("<id>", "Job id")
-      .option("--force", "Run even if not due", false)
+      .description("立即运行定时任务（调试）")
+      .argument("<id>", "任务 ID")
+      .option("--force", "即使未到期也运行", false)
       .action(async (id, opts) => {
         try {
           const res = await callGatewayFromCli("cron.run", opts, {

@@ -63,11 +63,11 @@ function formatAge(msAgo: number) {
 
 const devicesCallOpts = (cmd: Command, defaults?: { timeoutMs?: number }) =>
   cmd
-    .option("--url <url>", "Gateway WebSocket URL (defaults to gateway.remote.url when configured)")
-    .option("--token <token>", "Gateway token (if required)")
-    .option("--password <password>", "Gateway password (password auth)")
-    .option("--timeout <ms>", "Timeout in ms", String(defaults?.timeoutMs ?? 10_000))
-    .option("--json", "Output JSON", false);
+    .option("--url <url>", "网关 WebSocket URL（已配置时默认为 gateway.remote.url）")
+    .option("--token <token>", "网关令牌（如需要）")
+    .option("--password <password>", "网关密码（密码认证）")
+    .option("--timeout <ms>", "超时时间（毫秒）", String(defaults?.timeoutMs ?? 10_000))
+    .option("--json", "输出 JSON", false);
 
 const callGatewayCli = async (method: string, opts: DevicesRpcOpts, params?: unknown) =>
   withProgress(
@@ -106,12 +106,12 @@ function formatTokenSummary(tokens: DeviceTokenSummary[] | undefined) {
 }
 
 export function registerDevicesCli(program: Command) {
-  const devices = program.command("devices").description("Device pairing and auth tokens");
+  const devices = program.command("devices").description("设备配对和认证令牌");
 
   devicesCallOpts(
     devices
       .command("list")
-      .description("List pending and paired devices")
+      .description("列出待处理和已配对的设备")
       .action(async (opts: DevicesRpcOpts) => {
         const result = await callGatewayCli("device.pair.list", opts, {});
         const list = parseDevicePairingList(result);
@@ -180,8 +180,8 @@ export function registerDevicesCli(program: Command) {
   devicesCallOpts(
     devices
       .command("approve")
-      .description("Approve a pending device pairing request")
-      .argument("<requestId>", "Pending request id")
+      .description("批准待处理的设备配对请求")
+      .argument("<requestId>", "待处理请求 ID")
       .action(async (requestId: string, opts: DevicesRpcOpts) => {
         const result = await callGatewayCli("device.pair.approve", opts, { requestId });
         if (opts.json) {
@@ -196,8 +196,8 @@ export function registerDevicesCli(program: Command) {
   devicesCallOpts(
     devices
       .command("reject")
-      .description("Reject a pending device pairing request")
-      .argument("<requestId>", "Pending request id")
+      .description("拒绝待处理的设备配对请求")
+      .argument("<requestId>", "待处理请求 ID")
       .action(async (requestId: string, opts: DevicesRpcOpts) => {
         const result = await callGatewayCli("device.pair.reject", opts, { requestId });
         if (opts.json) {
@@ -212,10 +212,10 @@ export function registerDevicesCli(program: Command) {
   devicesCallOpts(
     devices
       .command("rotate")
-      .description("Rotate a device token for a role")
-      .requiredOption("--device <id>", "Device id")
-      .requiredOption("--role <role>", "Role name")
-      .option("--scope <scope...>", "Scopes to attach to the token (repeatable)")
+      .description("轮换设备某角色的令牌")
+      .requiredOption("--device <id>", "设备 ID")
+      .requiredOption("--role <role>", "角色名称")
+      .option("--scope <scope...>", "附加到令牌的作用域（可重复）")
       .action(async (opts: DevicesRpcOpts) => {
         const deviceId = String(opts.device ?? "").trim();
         const role = String(opts.role ?? "").trim();
@@ -236,9 +236,9 @@ export function registerDevicesCli(program: Command) {
   devicesCallOpts(
     devices
       .command("revoke")
-      .description("Revoke a device token for a role")
-      .requiredOption("--device <id>", "Device id")
-      .requiredOption("--role <role>", "Role name")
+      .description("撤销设备某角色的令牌")
+      .requiredOption("--device <id>", "设备 ID")
+      .requiredOption("--role <role>", "角色名称")
       .action(async (opts: DevicesRpcOpts) => {
         const deviceId = String(opts.device ?? "").trim();
         const role = String(opts.role ?? "").trim();

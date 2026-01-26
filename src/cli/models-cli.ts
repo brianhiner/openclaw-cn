@@ -38,23 +38,23 @@ function runModelsCommand(action: () => Promise<void>) {
 export function registerModelsCli(program: Command) {
   const models = program
     .command("models")
-    .description("Model discovery, scanning, and configuration")
-    .option("--status-json", "Output JSON (alias for `models status --json`)", false)
-    .option("--status-plain", "Plain output (alias for `models status --plain`)", false)
+    .description("模型发现、扫描和配置")
+    .option("--status-json", "输出 JSON（`models status --json` 的别名）", false)
+    .option("--status-plain", "纯文本输出（`models status --plain` 的别名）", false)
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/models", "docs.clawd.bot/cli/models")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/models", "docs.clawd.bot/cli/models")}\n`,
     );
 
   models
     .command("list")
-    .description("List models (configured by default)")
-    .option("--all", "Show full model catalog", false)
-    .option("--local", "Filter to local models", false)
-    .option("--provider <name>", "Filter by provider")
-    .option("--json", "Output JSON", false)
-    .option("--plain", "Plain line output", false)
+    .description("列出模型（默认显示已配置的）")
+    .option("--all", "显示完整模型目录", false)
+    .option("--local", "筛选本地模型", false)
+    .option("--provider <name>", "按提供商筛选")
+    .option("--json", "输出 JSON", false)
+    .option("--plain", "纯文本输出", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsListCommand(opts, defaultRuntime);
@@ -63,28 +63,24 @@ export function registerModelsCli(program: Command) {
 
   models
     .command("status")
-    .description("Show configured model state")
-    .option("--json", "Output JSON", false)
-    .option("--plain", "Plain output", false)
-    .option(
-      "--check",
-      "Exit non-zero if auth is expiring/expired (1=expired/missing, 2=expiring)",
-      false,
-    )
-    .option("--probe", "Probe configured provider auth (live)", false)
-    .option("--probe-provider <name>", "Only probe a single provider")
+    .description("显示已配置的模型状态")
+    .option("--json", "输出 JSON", false)
+    .option("--plain", "纯文本输出", false)
+    .option("--check", "如果认证即将/已过期则退出非零（1=过期/缺失，2=即将过期）", false)
+    .option("--probe", "探测已配置的提供商认证（实时）", false)
+    .option("--probe-provider <name>", "仅探测单个提供商")
     .option(
       "--probe-profile <id>",
-      "Only probe specific auth profile ids (repeat or comma-separated)",
+      "仅探测特定的认证配置文件 ID（可重复或逗号分隔）",
       (value, previous) => {
         const next = Array.isArray(previous) ? previous : previous ? [previous] : [];
         next.push(value);
         return next;
       },
     )
-    .option("--probe-timeout <ms>", "Per-probe timeout in ms")
-    .option("--probe-concurrency <n>", "Concurrent probes")
-    .option("--probe-max-tokens <n>", "Probe max tokens (best-effort)")
+    .option("--probe-timeout <ms>", "每次探测超时（毫秒）")
+    .option("--probe-concurrency <n>", "并发探测数")
+    .option("--probe-max-tokens <n>", "探测最大 token 数（尽力而为）")
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsStatusCommand(
@@ -106,8 +102,8 @@ export function registerModelsCli(program: Command) {
 
   models
     .command("set")
-    .description("Set the default model")
-    .argument("<model>", "Model id or alias")
+    .description("设置默认模型")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (model: string) => {
       await runModelsCommand(async () => {
         await modelsSetCommand(model, defaultRuntime);
@@ -116,21 +112,21 @@ export function registerModelsCli(program: Command) {
 
   models
     .command("set-image")
-    .description("Set the image model")
-    .argument("<model>", "Model id or alias")
+    .description("设置图像模型")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (model: string) => {
       await runModelsCommand(async () => {
         await modelsSetImageCommand(model, defaultRuntime);
       });
     });
 
-  const aliases = models.command("aliases").description("Manage model aliases");
+  const aliases = models.command("aliases").description("管理模型别名");
 
   aliases
     .command("list")
-    .description("List model aliases")
-    .option("--json", "Output JSON", false)
-    .option("--plain", "Plain output", false)
+    .description("列出模型别名")
+    .option("--json", "输出 JSON", false)
+    .option("--plain", "纯文本输出", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsAliasesListCommand(opts, defaultRuntime);
@@ -139,9 +135,9 @@ export function registerModelsCli(program: Command) {
 
   aliases
     .command("add")
-    .description("Add or update a model alias")
-    .argument("<alias>", "Alias name")
-    .argument("<model>", "Model id or alias")
+    .description("添加或更新模型别名")
+    .argument("<alias>", "别名")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (alias: string, model: string) => {
       await runModelsCommand(async () => {
         await modelsAliasesAddCommand(alias, model, defaultRuntime);
@@ -150,21 +146,21 @@ export function registerModelsCli(program: Command) {
 
   aliases
     .command("remove")
-    .description("Remove a model alias")
-    .argument("<alias>", "Alias name")
+    .description("删除模型别名")
+    .argument("<alias>", "别名")
     .action(async (alias: string) => {
       await runModelsCommand(async () => {
         await modelsAliasesRemoveCommand(alias, defaultRuntime);
       });
     });
 
-  const fallbacks = models.command("fallbacks").description("Manage model fallback list");
+  const fallbacks = models.command("fallbacks").description("管理模型备选列表");
 
   fallbacks
     .command("list")
-    .description("List fallback models")
-    .option("--json", "Output JSON", false)
-    .option("--plain", "Plain output", false)
+    .description("列出备选模型")
+    .option("--json", "输出 JSON", false)
+    .option("--plain", "纯文本输出", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsFallbacksListCommand(opts, defaultRuntime);
@@ -173,8 +169,8 @@ export function registerModelsCli(program: Command) {
 
   fallbacks
     .command("add")
-    .description("Add a fallback model")
-    .argument("<model>", "Model id or alias")
+    .description("添加备选模型")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (model: string) => {
       await runModelsCommand(async () => {
         await modelsFallbacksAddCommand(model, defaultRuntime);
@@ -183,8 +179,8 @@ export function registerModelsCli(program: Command) {
 
   fallbacks
     .command("remove")
-    .description("Remove a fallback model")
-    .argument("<model>", "Model id or alias")
+    .description("删除备选模型")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (model: string) => {
       await runModelsCommand(async () => {
         await modelsFallbacksRemoveCommand(model, defaultRuntime);
@@ -193,22 +189,20 @@ export function registerModelsCli(program: Command) {
 
   fallbacks
     .command("clear")
-    .description("Clear all fallback models")
+    .description("清除所有备选模型")
     .action(async () => {
       await runModelsCommand(async () => {
         await modelsFallbacksClearCommand(defaultRuntime);
       });
     });
 
-  const imageFallbacks = models
-    .command("image-fallbacks")
-    .description("Manage image model fallback list");
+  const imageFallbacks = models.command("image-fallbacks").description("管理图像模型备选列表");
 
   imageFallbacks
     .command("list")
-    .description("List image fallback models")
-    .option("--json", "Output JSON", false)
-    .option("--plain", "Plain output", false)
+    .description("列出图像备选模型")
+    .option("--json", "输出 JSON", false)
+    .option("--plain", "纯文本输出", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsImageFallbacksListCommand(opts, defaultRuntime);
@@ -217,8 +211,8 @@ export function registerModelsCli(program: Command) {
 
   imageFallbacks
     .command("add")
-    .description("Add an image fallback model")
-    .argument("<model>", "Model id or alias")
+    .description("添加图像备选模型")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (model: string) => {
       await runModelsCommand(async () => {
         await modelsImageFallbacksAddCommand(model, defaultRuntime);
@@ -227,8 +221,8 @@ export function registerModelsCli(program: Command) {
 
   imageFallbacks
     .command("remove")
-    .description("Remove an image fallback model")
-    .argument("<model>", "Model id or alias")
+    .description("删除图像备选模型")
+    .argument("<model>", "模型 ID 或别名")
     .action(async (model: string) => {
       await runModelsCommand(async () => {
         await modelsImageFallbacksRemoveCommand(model, defaultRuntime);
@@ -237,7 +231,7 @@ export function registerModelsCli(program: Command) {
 
   imageFallbacks
     .command("clear")
-    .description("Clear all image fallback models")
+    .description("清除所有图像备选模型")
     .action(async () => {
       await runModelsCommand(async () => {
         await modelsImageFallbacksClearCommand(defaultRuntime);
@@ -246,19 +240,19 @@ export function registerModelsCli(program: Command) {
 
   models
     .command("scan")
-    .description("Scan OpenRouter free models for tools + images")
-    .option("--min-params <b>", "Minimum parameter size (billions)")
-    .option("--max-age-days <days>", "Skip models older than N days")
-    .option("--provider <name>", "Filter by provider prefix")
-    .option("--max-candidates <n>", "Max fallback candidates", "6")
-    .option("--timeout <ms>", "Per-probe timeout in ms")
-    .option("--concurrency <n>", "Probe concurrency")
-    .option("--no-probe", "Skip live probes; list free candidates only")
-    .option("--yes", "Accept defaults without prompting", false)
-    .option("--no-input", "Disable prompts (use defaults)")
-    .option("--set-default", "Set agents.defaults.model to the first selection", false)
-    .option("--set-image", "Set agents.defaults.imageModel to the first image selection", false)
-    .option("--json", "Output JSON", false)
+    .description("扫描 OpenRouter 免费模型的工具 + 图像支持")
+    .option("--min-params <b>", "最小参数量（十亿）")
+    .option("--max-age-days <days>", "跳过超过 N 天的模型")
+    .option("--provider <name>", "按提供商前缀筛选")
+    .option("--max-candidates <n>", "最大备选数量", "6")
+    .option("--timeout <ms>", "每次探测超时（毫秒）")
+    .option("--concurrency <n>", "探测并发数")
+    .option("--no-probe", "跳过实时探测；仅列出免费候选")
+    .option("--yes", "不提示直接接受默认值", false)
+    .option("--no-input", "禁用提示（使用默认值）")
+    .option("--set-default", "将 agents.defaults.model 设为第一个选择", false)
+    .option("--set-image", "将 agents.defaults.imageModel 设为第一个图像选择", false)
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsScanCommand(opts, defaultRuntime);
@@ -277,11 +271,11 @@ export function registerModelsCli(program: Command) {
     });
   });
 
-  const auth = models.command("auth").description("Manage model auth profiles");
+  const auth = models.command("auth").description("管理模型认证配置文件");
 
   auth
     .command("add")
-    .description("Interactive auth helper (setup-token or paste token)")
+    .description("交互式认证工具（setup-token 或粘贴令牌）")
     .action(async () => {
       await runModelsCommand(async () => {
         await modelsAuthAddCommand({}, defaultRuntime);
@@ -290,10 +284,10 @@ export function registerModelsCli(program: Command) {
 
   auth
     .command("login")
-    .description("Run a provider plugin auth flow (OAuth/API key)")
-    .option("--provider <id>", "Provider id registered by a plugin")
-    .option("--method <id>", "Provider auth method id")
-    .option("--set-default", "Apply the provider's default model recommendation", false)
+    .description("运行提供商插件认证流程（OAuth/API 密钥）")
+    .option("--provider <id>", "插件注册的提供商 ID")
+    .option("--method <id>", "提供商认证方法 ID")
+    .option("--set-default", "应用提供商的默认模型推荐", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsAuthLoginCommand(
@@ -309,9 +303,9 @@ export function registerModelsCli(program: Command) {
 
   auth
     .command("setup-token")
-    .description("Run a provider CLI to create/sync a token (TTY required)")
-    .option("--provider <name>", "Provider id (default: anthropic)")
-    .option("--yes", "Skip confirmation", false)
+    .description("运行提供商 CLI 创建/同步令牌（需要 TTY）")
+    .option("--provider <name>", "提供商 ID（默认：anthropic）")
+    .option("--yes", "跳过确认", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsAuthSetupTokenCommand(
@@ -326,13 +320,10 @@ export function registerModelsCli(program: Command) {
 
   auth
     .command("paste-token")
-    .description("Paste a token into auth-profiles.json and update config")
-    .requiredOption("--provider <name>", "Provider id (e.g. anthropic)")
-    .option("--profile-id <id>", "Auth profile id (default: <provider>:manual)")
-    .option(
-      "--expires-in <duration>",
-      "Optional expiry duration (e.g. 365d, 12h). Stored as absolute expiresAt.",
-    )
+    .description("将令牌粘贴到 auth-profiles.json 并更新配置")
+    .requiredOption("--provider <name>", "提供商 ID（例如 anthropic）")
+    .option("--profile-id <id>", "认证配置文件 ID（默认：<provider>:manual）")
+    .option("--expires-in <duration>", "可选过期时间（例如 365d, 12h）。存储为绝对 expiresAt。")
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsAuthPasteTokenCommand(
@@ -348,9 +339,9 @@ export function registerModelsCli(program: Command) {
 
   auth
     .command("login-github-copilot")
-    .description("Login to GitHub Copilot via GitHub device flow (TTY required)")
-    .option("--profile-id <id>", "Auth profile id (default: github-copilot:github)")
-    .option("--yes", "Overwrite existing profile without prompting", false)
+    .description("通过 GitHub 设备流程登录 GitHub Copilot（需要 TTY）")
+    .option("--profile-id <id>", "认证配置文件 ID（默认：github-copilot:github）")
+    .option("--yes", "不提示直接覆盖现有配置文件", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await githubCopilotLoginCommand(
@@ -363,14 +354,14 @@ export function registerModelsCli(program: Command) {
       });
     });
 
-  const order = auth.command("order").description("Manage per-agent auth profile order overrides");
+  const order = auth.command("order").description("管理每个智能体的认证配置文件顺序覆盖");
 
   order
     .command("get")
-    .description("Show per-agent auth order override (from auth-profiles.json)")
-    .requiredOption("--provider <name>", "Provider id (e.g. anthropic)")
-    .option("--agent <id>", "Agent id (default: configured default agent)")
-    .option("--json", "Output JSON", false)
+    .description("显示每个智能体的认证顺序覆盖（来自 auth-profiles.json）")
+    .requiredOption("--provider <name>", "提供商 ID（例如 anthropic）")
+    .option("--agent <id>", "智能体 ID（默认：已配置的默认智能体）")
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsAuthOrderGetCommand(
@@ -386,10 +377,10 @@ export function registerModelsCli(program: Command) {
 
   order
     .command("set")
-    .description("Set per-agent auth order override (locks rotation to this list)")
-    .requiredOption("--provider <name>", "Provider id (e.g. anthropic)")
-    .option("--agent <id>", "Agent id (default: configured default agent)")
-    .argument("<profileIds...>", "Auth profile ids (e.g. anthropic:claude-cli)")
+    .description("设置每个智能体的认证顺序覆盖（锁定轮换到此列表）")
+    .requiredOption("--provider <name>", "提供商 ID（例如 anthropic）")
+    .option("--agent <id>", "智能体 ID（默认：已配置的默认智能体）")
+    .argument("<profileIds...>", "认证配置文件 ID（例如 anthropic:claude-cli）")
     .action(async (profileIds: string[], opts) => {
       await runModelsCommand(async () => {
         await modelsAuthOrderSetCommand(
@@ -405,9 +396,9 @@ export function registerModelsCli(program: Command) {
 
   order
     .command("clear")
-    .description("Clear per-agent auth order override (fall back to config/round-robin)")
-    .requiredOption("--provider <name>", "Provider id (e.g. anthropic)")
-    .option("--agent <id>", "Agent id (default: configured default agent)")
+    .description("清除每个智能体的认证顺序覆盖（回退到配置/轮换）")
+    .requiredOption("--provider <name>", "提供商 ID（例如 anthropic）")
+    .option("--agent <id>", "智能体 ID（默认：已配置的默认智能体）")
     .action(async (opts) => {
       await runModelsCommand(async () => {
         await modelsAuthOrderClearCommand(

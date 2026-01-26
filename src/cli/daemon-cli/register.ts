@@ -14,23 +14,23 @@ import {
 export function registerDaemonCli(program: Command) {
   const daemon = program
     .command("daemon")
-    .description("Manage the Gateway service (launchd/systemd/schtasks)")
+    .description("管理网关服务（launchd/systemd/schtasks）")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/gateway", "docs.clawd.bot/cli/gateway")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/gateway", "docs.clawd.bot/cli/gateway")}\n`,
     );
 
   daemon
     .command("status")
-    .description("Show service install status + probe the Gateway")
-    .option("--url <url>", "Gateway WebSocket URL (defaults to config/remote/local)")
-    .option("--token <token>", "Gateway token (if required)")
-    .option("--password <password>", "Gateway password (password auth)")
-    .option("--timeout <ms>", "Timeout in ms", "10000")
-    .option("--no-probe", "Skip RPC probe")
-    .option("--deep", "Scan system-level services", false)
-    .option("--json", "Output JSON", false)
+    .description("显示服务安装状态 + 探测网关")
+    .option("--url <url>", "网关 WebSocket URL（默认为 config/remote/local）")
+    .option("--token <token>", "网关令牌（如需要）")
+    .option("--password <password>", "网关密码（密码认证）")
+    .option("--timeout <ms>", "超时时间（毫秒）", "10000")
+    .option("--no-probe", "跳过 RPC 探测")
+    .option("--deep", "扫描系统级服务", false)
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runDaemonStatus({
         rpc: opts,
@@ -42,44 +42,44 @@ export function registerDaemonCli(program: Command) {
 
   daemon
     .command("install")
-    .description("Install the Gateway service (launchd/systemd/schtasks)")
-    .option("--port <port>", "Gateway port")
-    .option("--runtime <runtime>", "Daemon runtime (node|bun). Default: node")
-    .option("--token <token>", "Gateway token (token auth)")
-    .option("--force", "Reinstall/overwrite if already installed", false)
-    .option("--json", "Output JSON", false)
+    .description("安装网关服务（launchd/systemd/schtasks）")
+    .option("--port <port>", "网关端口")
+    .option("--runtime <runtime>", "守护进程运行时（node|bun）。默认：node")
+    .option("--token <token>", "网关令牌（令牌认证）")
+    .option("--force", "如已安装则重新安装/覆盖", false)
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runDaemonInstall(opts);
     });
 
   daemon
     .command("uninstall")
-    .description("Uninstall the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description("卸载网关服务（launchd/systemd/schtasks）")
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runDaemonUninstall(opts);
     });
 
   daemon
     .command("start")
-    .description("Start the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description("启动网关服务（launchd/systemd/schtasks）")
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runDaemonStart(opts);
     });
 
   daemon
     .command("stop")
-    .description("Stop the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description("停止网关服务（launchd/systemd/schtasks）")
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runDaemonStop(opts);
     });
 
   daemon
     .command("restart")
-    .description("Restart the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description("重启网关服务（launchd/systemd/schtasks）")
+    .option("--json", "输出 JSON", false)
     .action(async (opts) => {
       await runDaemonRestart(opts);
     });

@@ -420,31 +420,31 @@ export async function runMemoryStatus(opts: MemoryCommandOptions) {
 export function registerMemoryCli(program: Command) {
   const memory = program
     .command("memory")
-    .description("Memory search tools")
+    .description("记忆搜索工具")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/memory", "docs.clawd.bot/cli/memory")}\n`,
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/memory", "docs.clawd.bot/cli/memory")}\n`,
     );
 
   memory
     .command("status")
-    .description("Show memory search index status")
-    .option("--agent <id>", "Agent id (default: default agent)")
-    .option("--json", "Print JSON")
-    .option("--deep", "Probe embedding provider availability")
-    .option("--index", "Reindex if dirty (implies --deep)")
-    .option("--verbose", "Verbose logging", false)
+    .description("显示记忆搜索索引状态")
+    .option("--agent <id>", "智能体 ID（默认：默认智能体）")
+    .option("--json", "输出 JSON")
+    .option("--deep", "探测嵌入提供商可用性")
+    .option("--index", "如果脑则重新索引（隐含 --deep）")
+    .option("--verbose", "详细日志", false)
     .action(async (opts: MemoryCommandOptions) => {
       await runMemoryStatus(opts);
     });
 
   memory
     .command("index")
-    .description("Reindex memory files")
-    .option("--agent <id>", "Agent id (default: default agent)")
-    .option("--force", "Force full reindex", false)
-    .option("--verbose", "Verbose logging", false)
+    .description("重新索引记忆文件")
+    .option("--agent <id>", "智能体 ID（默认：默认智能体）")
+    .option("--force", "强制完全重新索引", false)
+    .option("--verbose", "详细日志", false)
     .action(async (opts: MemoryCommandOptions & { force?: boolean }) => {
       setVerbose(Boolean(opts.verbose));
       const cfg = loadConfig();
@@ -558,12 +558,12 @@ export function registerMemoryCli(program: Command) {
 
   memory
     .command("search")
-    .description("Search memory files")
-    .argument("<query>", "Search query")
-    .option("--agent <id>", "Agent id (default: default agent)")
-    .option("--max-results <n>", "Max results", (value: string) => Number(value))
-    .option("--min-score <n>", "Minimum score", (value: string) => Number(value))
-    .option("--json", "Print JSON")
+    .description("搜索记忆文件")
+    .argument("<query>", "搜索查询")
+    .option("--agent <id>", "智能体 ID（默认：默认智能体）")
+    .option("--max-results <n>", "最大结果数", (value: string) => Number(value))
+    .option("--min-score <n>", "最低分数", (value: string) => Number(value))
+    .option("--json", "输出 JSON")
     .action(
       async (
         query: string,

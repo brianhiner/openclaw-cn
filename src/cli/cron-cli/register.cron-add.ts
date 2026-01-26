@@ -18,8 +18,8 @@ export function registerCronStatusCommand(cron: Command) {
   addGatewayClientOptions(
     cron
       .command("status")
-      .description("Show cron scheduler status")
-      .option("--json", "Output JSON", false)
+      .description("显示定时调度器状态")
+      .option("--json", "输出 JSON", false)
       .action(async (opts) => {
         try {
           const res = await callGatewayFromCli("cron.status", opts, {});
@@ -36,9 +36,9 @@ export function registerCronListCommand(cron: Command) {
   addGatewayClientOptions(
     cron
       .command("list")
-      .description("List cron jobs")
-      .option("--all", "Include disabled jobs", false)
-      .option("--json", "Output JSON", false)
+      .description("列出定时任务")
+      .option("--all", "包含已禁用的任务", false)
+      .option("--json", "输出 JSON", false)
       .action(async (opts) => {
         try {
           const res = await callGatewayFromCli("cron.list", opts, {
@@ -63,42 +63,31 @@ export function registerCronAddCommand(cron: Command) {
     cron
       .command("add")
       .alias("create")
-      .description("Add a cron job")
-      .requiredOption("--name <name>", "Job name")
-      .option("--description <text>", "Optional description")
-      .option("--disabled", "Create job disabled", false)
-      .option("--delete-after-run", "Delete one-shot job after it succeeds", false)
-      .option("--agent <id>", "Agent id for this job")
-      .option("--session <target>", "Session target (main|isolated)", "main")
-      .option("--wake <mode>", "Wake mode (now|next-heartbeat)", "next-heartbeat")
-      .option("--at <when>", "Run once at time (ISO) or +duration (e.g. 20m)")
-      .option("--every <duration>", "Run every duration (e.g. 10m, 1h)")
-      .option("--cron <expr>", "Cron expression (5-field)")
-      .option("--tz <iana>", "Timezone for cron expressions (IANA)", "")
-      .option("--system-event <text>", "System event payload (main session)")
-      .option("--message <text>", "Agent message payload")
-      .option("--thinking <level>", "Thinking level for agent jobs (off|minimal|low|medium|high)")
-      .option("--model <model>", "Model override for agent jobs (provider/model or alias)")
-      .option("--timeout-seconds <n>", "Timeout seconds for agent jobs")
-      .option(
-        "--deliver",
-        "Deliver agent output (required when using last-route delivery without --to)",
-        false,
-      )
-      .option("--channel <channel>", `Delivery channel (${getCronChannelOptions()})`, "last")
-      .option(
-        "--to <dest>",
-        "Delivery destination (E.164, Telegram chatId, or Discord channel/user)",
-      )
-      .option("--best-effort-deliver", "Do not fail the job if delivery fails", false)
-      .option("--post-prefix <prefix>", "Prefix for main-session post", "Cron")
-      .option(
-        "--post-mode <mode>",
-        "What to post back to main for isolated jobs (summary|full)",
-        "summary",
-      )
-      .option("--post-max-chars <n>", "Max chars when --post-mode=full (default 8000)", "8000")
-      .option("--json", "Output JSON", false)
+      .description("添加定时任务")
+      .requiredOption("--name <name>", "任务名称")
+      .option("--description <text>", "可选描述")
+      .option("--disabled", "创建时禁用任务", false)
+      .option("--delete-after-run", "一次性任务成功后删除", false)
+      .option("--agent <id>", "此任务的智能体 ID")
+      .option("--session <target>", "会话目标（main|隔离isolated）", "main")
+      .option("--wake <mode>", "唤醒模式（now|next-heartbeat）", "next-heartbeat")
+      .option("--at <when>", "在指定时间运行一次（ISO）或 +时长（例如 20m）")
+      .option("--every <duration>", "每隔指定时长运行（例如 10m, 1h）")
+      .option("--cron <expr>", "Cron 表达式（5 字段）")
+      .option("--tz <iana>", "Cron 表达式的时区（IANA）", "")
+      .option("--system-event <text>", "系统事件负载（主会话）")
+      .option("--message <text>", "智能体消息负载")
+      .option("--thinking <level>", "智能体任务的思考级别（off|minimal|low|medium|high）")
+      .option("--model <model>", "智能体任务的模型覆盖（提供商/模型或别名）")
+      .option("--timeout-seconds <n>", "智能体任务的超时秒数")
+      .option("--deliver", "交付智能体输出（使用 last-route 交付且无 --to 时必需）", false)
+      .option("--channel <channel>", `交付渠道（${getCronChannelOptions()}）`, "last")
+      .option("--to <dest>", "交付目的地（E.164、Telegram chatId 或 Discord 频道/用户）")
+      .option("--best-effort-deliver", "交付失败时不使任务失败", false)
+      .option("--post-prefix <prefix>", "主会话发布的前缀", "Cron")
+      .option("--post-mode <mode>", "隔离任务发布到主会话的内容（summary|full）", "summary")
+      .option("--post-max-chars <n>", "--post-mode=full 时的最大字符数（默认 8000）", "8000")
+      .option("--json", "输出 JSON", false)
       .action(async (opts: GatewayRpcOpts & Record<string, unknown>) => {
         try {
           const schedule = (() => {

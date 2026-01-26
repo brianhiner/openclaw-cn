@@ -12,10 +12,11 @@ import { registerCronSimpleCommands } from "./register.cron-simple.js";
 export function registerCronCli(program: Command) {
   const cron = program
     .command("cron")
-    .description("Manage cron jobs (via Gateway)")
+    .description("管理定时任务（通过网关）")
     .addHelpText(
       "after",
-      () => `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/cron", "docs.clawd.bot/cli/cron")}\n`,
+      () =>
+        `\n${theme.muted("文档：")} ${formatDocsLink("/cli/cron", "docs.clawd.bot/cli/cron")}\n`,
     );
 
   registerCronStatusCommand(cron);

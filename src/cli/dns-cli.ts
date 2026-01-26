@@ -94,20 +94,16 @@ function ensureImportLine(corefilePath: string, importGlob: string): boolean {
 export function registerDnsCli(program: Command) {
   const dns = program
     .command("dns")
-    .description("DNS helpers for wide-area discovery (Tailscale + CoreDNS)")
+    .description("广域发现的 DNS 工具（Tailscale + CoreDNS）")
     .addHelpText(
       "after",
-      () => `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/dns", "docs.clawd.bot/cli/dns")}\n`,
+      () => `\n${theme.muted("文档：")} ${formatDocsLink("/cli/dns", "docs.clawd.bot/cli/dns")}\n`,
     );
 
   dns
     .command("setup")
-    .description("Set up CoreDNS to serve clawdbot.internal for unicast DNS-SD (Wide-Area Bonjour)")
-    .option(
-      "--apply",
-      "Install/update CoreDNS config and (re)start the service (requires sudo)",
-      false,
-    )
+    .description("设置 CoreDNS 服务 clawdbot.internal 用于单播 DNS-SD（广域 Bonjour）")
+    .option("--apply", "安装/更新 CoreDNS 配置并（重新）启动服务（需要 sudo）", false)
     .action(async (opts) => {
       const cfg = loadConfig();
       const tailnetIPv4 = pickPrimaryTailnetIPv4();

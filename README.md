@@ -4,6 +4,8 @@
 >
 > 欢迎提交 Issue 和 PR！Bug 修复和功能优化会考虑贡献回上游。
 
+> **正在进行的工作：** 目前正在完成各项翻译工作，后续将研究接入国内社交软件，例如QQ、微信、钉钉、企业微信、飞书等。
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/clawdbot/clawdbot/main/docs/whatsapp-clawd.jpg" alt="Clawdbot" width="400">
 </p>

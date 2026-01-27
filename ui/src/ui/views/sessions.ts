@@ -80,13 +80,13 @@ export function renderSessions(props: SessionsProps) {
           <div class="card-sub">Active session keys and per-session overrides.</div>
         </div>
         <button class="btn" ?disabled=${props.loading} @click=${props.onRefresh}>
-          ${props.loading ? "Loading…" : "Refresh"}
+          ${props.loading ? "加载中…" : "刷新"}
         </button>
       </div>
 
       <div class="filters" style="margin-top: 14px;">
         <label class="field">
-          <span>Active within (minutes)</span>
+          <span>活跃于（分钟内）</span>
           <input
             .value=${props.activeMinutes}
             @input=${(e: Event) =>
@@ -99,7 +99,7 @@ export function renderSessions(props: SessionsProps) {
           />
         </label>
         <label class="field">
-          <span>Limit</span>
+          <span>限制</span>
           <input
             .value=${props.limit}
             @input=${(e: Event) =>
@@ -112,7 +112,7 @@ export function renderSessions(props: SessionsProps) {
           />
         </label>
         <label class="field checkbox">
-          <span>Include global</span>
+          <span>包含全局</span>
           <input
             type="checkbox"
             .checked=${props.includeGlobal}
@@ -126,7 +126,7 @@ export function renderSessions(props: SessionsProps) {
           />
         </label>
         <label class="field checkbox">
-          <span>Include unknown</span>
+          <span>包含未知</span>
           <input
             type="checkbox"
             .checked=${props.includeUnknown}
@@ -146,23 +146,23 @@ export function renderSessions(props: SessionsProps) {
         : nothing}
 
       <div class="muted" style="margin-top: 12px;">
-        ${props.result ? `Store: ${props.result.path}` : ""}
+        ${props.result ? `存储: ${props.result.path}` : ""}
       </div>
 
       <div class="table" style="margin-top: 16px;">
         <div class="table-head">
-          <div>Key</div>
-          <div>Label</div>
-          <div>Kind</div>
-          <div>Updated</div>
-          <div>Tokens</div>
-          <div>Thinking</div>
-          <div>Verbose</div>
-          <div>Reasoning</div>
-          <div>Actions</div>
+          <div>密钥</div>
+          <div>标签</div>
+          <div>类型</div>
+          <div>更新时间</div>
+          <div>令牌</div>
+          <div>思考</div>
+          <div>详细</div>
+          <div>推理</div>
+          <div>操作</div>
         </div>
         ${rows.length === 0
-          ? html`<div class="muted">No sessions found.</div>`
+          ? html`<div class="muted">未找到会话。</div>`
           : rows.map((row) =>
               renderRow(row, props.basePath, props.onPatch, props.onDelete, props.loading),
             )}
@@ -200,7 +200,7 @@ function renderRow(
         <input
           .value=${row.label ?? ""}
           ?disabled=${disabled}
-          placeholder="(optional)"
+          placeholder="（可选）"
           @change=${(e: Event) => {
             const value = (e.target as HTMLInputElement).value.trim();
             onPatch(row.key, { label: value || null });
@@ -222,7 +222,7 @@ function renderRow(
           }}
         >
           ${thinkLevels.map((level) =>
-            html`<option value=${level}>${level || "inherit"}</option>`,
+            html`<option value=${level}>${level || "继承"}</option>`
           )}
         </select>
       </div>
@@ -250,13 +250,13 @@ function renderRow(
           }}
         >
           ${REASONING_LEVELS.map((level) =>
-            html`<option value=${level}>${level || "inherit"}</option>`,
+            html`<option value=${level}>${level || "继承"}</option>`
           )}
         </select>
       </div>
       <div>
         <button class="btn danger" ?disabled=${disabled} @click=${() => onDelete(row.key)}>
-          Delete
+          删除
         </button>
       </div>
     </div>

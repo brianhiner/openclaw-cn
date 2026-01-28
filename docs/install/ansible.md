@@ -1,205 +1,205 @@
 ---
-summary: "使用 Ansible、Tailscale VPN 和防火墙隔离的自动化、加固的 Clawdbot 安装"
+summary: "Automated, hardened Clawdbot installation with Ansible, Tailscale VPN, and firewall isolation"
 read_when:
-  - 您想要带有安全加固的自动化服务器部署
-  - 您需要带 VPN 访问的防火墙隔离设置
-  - 您正在部署到远程 Debian/Ubuntu 服务器
+  - You want automated server deployment with security hardening
+  - You need firewall-isolated setup with VPN access
+  - You're deploying to remote Debian/Ubuntu servers
 ---
 
-# Ansible 安装
+# Ansible Installation
 
-将 Clawdbot 部署到生产服务器的推荐方式是通过 **[clawdbot-ansible](https://github.com/clawdbot/clawdbot-ansible)** — 一个以安全优先架构的自动化安装程序。
+The recommended way to deploy Clawdbot to production servers is via **[clawdbot-ansible](https://github.com/jiulingyun/clawdbot-chinese-ansible)** — an automated installer with security-first architecture.
 
-## 快速开始
+## Quick Start
 
-单命令安装：
+One-command install:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/clawdbot/clawdbot-ansible/main/install.sh | bash
 ```
 
-> **📦 完整指南: [github.com/clawdbot/clawdbot-ansible](https://github.com/clawdbot/clawdbot-ansible)**
+> **📦 Full guide: [github.com/jiulingyun/clawdbot-chinese-ansible](https://github.com/jiulingyun/clawdbot-chinese-ansible)**
 >
-> clawdbot-ansible 仓库是 Ansible 部署的真实来源。本页是快速概览。
+> The clawdbot-ansible repo is the source of truth for Ansible deployment. This page is a quick overview.
 
-## 您将获得
+## What You Get
 
-- 🔒 **防火墙优先安全**: UFW + Docker 隔离（仅 SSH + Tailscale 可访问）
-- 🔐 **Tailscale VPN**: 安全的远程访问，不公开暴露服务
-- 🐳 **Docker**: 隔离沙箱容器，仅本地主机绑定
-- 🛡️ **深度防御**: 4 层安全架构
-- 🚀 **单命令设置**: 数分钟内完成完整部署
-- 🔧 **Systemd 集成**: 开机自动启动并加固
+- 🔒 **Firewall-first security**: UFW + Docker isolation (only SSH + Tailscale accessible)
+- 🔐 **Tailscale VPN**: Secure remote access without exposing services publicly
+- 🐳 **Docker**: Isolated sandbox containers, localhost-only bindings
+- 🛡️ **Defense in depth**: 4-layer security architecture
+- 🚀 **One-command setup**: Complete deployment in minutes
+- 🔧 **Systemd integration**: Auto-start on boot with hardening
 
-## 要求
+## Requirements
 
-- **操作系统**: Debian 11+ 或 Ubuntu 20.04+
-- **访问权限**: Root 或 sudo 权限
-- **网络**: 用于包安装的互联网连接
-- **Ansible**: 2.14+（由快速开始脚本自动安装）
+- **OS**: Debian 11+ or Ubuntu 20.04+
+- **Access**: Root or sudo privileges
+- **Network**: Internet connection for package installation
+- **Ansible**: 2.14+ (installed automatically by quick-start script)
 
-## 安装内容
+## What Gets Installed
 
-Ansible playbook 安装并配置：
+The Ansible playbook installs and configures:
 
-1. **Tailscale**（用于安全远程访问的网格 VPN）
-2. **UFW 防火墙**（仅 SSH + Tailscale 端口）
-3. **Docker CE + Compose V2**（用于代理沙箱）
-4. **Node.js 22.x + pnpm**（运行时依赖）
-5. **Clawdbot**（基于主机，非容器化）
-6. **Systemd 服务**（开机自动启动并安全加固）
+1. **Tailscale** (mesh VPN for secure remote access)
+2. **UFW firewall** (SSH + Tailscale ports only)
+3. **Docker CE + Compose V2** (for agent sandboxes)
+4. **Node.js 22.x + pnpm** (runtime dependencies)
+5. **Clawdbot** (host-based, not containerized)
+6. **Systemd service** (auto-start with security hardening)
 
-注意：网关在**主机上直接运行**（不在 Docker 中），但代理沙箱使用 Docker 进行隔离。详情请参阅 [沙箱](/gateway/sandboxing)。
+Note: The gateway runs **directly on the host** (not in Docker), but agent sandboxes use Docker for isolation. See [Sandboxing](/gateway/sandboxing) for details.
 
-## 安装后设置
+## Post-Install Setup
 
-安装完成后，切换到 clawdbot 用户：
+After installation completes, switch to the clawdbot user:
 
 ```bash
 sudo -i -u clawdbot
 ```
 
-安装后脚本将引导您完成：
+The post-install script will guide you through:
 
-1. **入门向导**: 配置 Clawdbot 设置
-2. **提供商登录**: 连接 WhatsApp/Telegram/Discord/Signal
-3. **网关测试**: 验证安装
-4. **Tailscale 设置**: 连接到您的 VPN 网格
+1. **Onboarding wizard**: Configure Clawdbot settings
+2. **Provider login**: Connect WhatsApp/Telegram/Discord/Signal
+3. **Gateway testing**: Verify the installation
+4. **Tailscale setup**: Connect to your VPN mesh
 
-### 快速命令
+### Quick commands
 
 ```bash
-# 检查服务状态
+# Check service status
 sudo systemctl status clawdbot
 
-# 查看实时日志
+# View live logs
 sudo journalctl -u clawdbot -f
 
-# 重启网关
+# Restart gateway
 sudo systemctl restart clawdbot
 
-# 提供商登录（以 clawdbot 用户身份运行）
+# Provider login (run as clawdbot user)
 sudo -i -u clawdbot
-clawdbot-cn channels login
+clawdbot channels login
 ```
 
-## 安全架构
+## Security Architecture
 
-### 4 层防护
+### 4-Layer Defense
 
-1. **防火墙 (UFW)**: 仅 SSH (22) + Tailscale (41641/udp) 对外公开
-2. **VPN (Tailscale)**: 网关仅可通过 VPN 网格访问
-3. **Docker 隔离**: DOCKER-USER iptables 链防止外部端口暴露
-4. **Systemd 加固**: NoNewPrivileges, PrivateTmp, 非特权用户
+1. **Firewall (UFW)**: Only SSH (22) + Tailscale (41641/udp) exposed publicly
+2. **VPN (Tailscale)**: Gateway accessible only via VPN mesh
+3. **Docker Isolation**: DOCKER-USER iptables chain prevents external port exposure
+4. **Systemd Hardening**: NoNewPrivileges, PrivateTmp, unprivileged user
 
-### 验证
+### Verification
 
-测试外部攻击面：
+Test external attack surface:
 
 ```bash
 nmap -p- YOUR_SERVER_IP
 ```
 
-应该只显示 **端口 22** (SSH) 开放。所有其他服务（网关、Docker）都被锁定。
+Should show **only port 22** (SSH) open. All other services (gateway, Docker) are locked down.
 
-### Docker 可用性
+### Docker Availability
 
-Docker 是为**代理沙箱**（隔离工具执行）安装的，而不是为了运行网关本身。网关仅绑定到本地主机并通过 Tailscale VPN 访问。
+Docker is installed for **agent sandboxes** (isolated tool execution), not for running the gateway itself. The gateway binds to localhost only and is accessible via Tailscale VPN.
 
-沙箱配置请参阅 [多代理沙箱和工具](/multi-agent-sandbox-tools)。
+See [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools) for sandbox configuration.
 
-## 手动安装
+## Manual Installation
 
-如果您更喜欢手动控制自动化：
+If you prefer manual control over the automation:
 
 ```bash
-# 1. 安装先决条件
+# 1. Install prerequisites
 sudo apt update && sudo apt install -y ansible git
 
-# 2. 克隆仓库
-git clone https://github.com/clawdbot/clawdbot-ansible.git
+# 2. Clone repository
+git clone https://github.com/jiulingyun/clawdbot-chinese-ansible.git
 cd clawdbot-ansible
 
-# 3. 安装 Ansible 集合
+# 3. Install Ansible collections
 ansible-galaxy collection install -r requirements.yml
 
-# 4. 运行 playbook
+# 4. Run playbook
 ./run-playbook.sh
 
-# 或直接运行（然后手动执行 /tmp/clawdbot-setup.sh）
+# Or run directly (then manually execute /tmp/clawdbot-setup.sh after)
 # ansible-playbook playbook.yml --ask-become-pass
 ```
 
-## 更新 Clawdbot
+## Updating Clawdbot
 
-Ansible 安装程序为手动更新设置了 Clawdbot。标准更新流程请参阅 [更新](/install/updating)。
+The Ansible installer sets up Clawdbot for manual updates. See [Updating](/install/updating) for the standard update flow.
 
-要重新运行 Ansible playbook（例如，用于配置更改）：
+To re-run the Ansible playbook (e.g., for configuration changes):
 
 ```bash
 cd clawdbot-ansible
 ./run-playbook.sh
 ```
 
-注意：这是幂等的，可以安全地多次运行。
+Note: This is idempotent and safe to run multiple times.
 
-## 故障排除
+## Troubleshooting
 
-### 防火墙阻止我的连接
+### Firewall blocks my connection
 
-如果您被锁定：
-- 首先确保可以通过 Tailscale VPN 访问
-- SSH 访问（端口 22）始终允许
-- 网关**仅**可通过 Tailscale 访问，这是设计如此
+If you're locked out:
+- Ensure you can access via Tailscale VPN first
+- SSH access (port 22) is always allowed
+- The gateway is **only** accessible via Tailscale by design
 
-### 服务无法启动
+### Service won't start
 
 ```bash
-# 检查日志
+# Check logs
 sudo journalctl -u clawdbot -n 100
 
-# 验证权限
+# Verify permissions
 sudo ls -la /opt/clawdbot
 
-# 测试手动启动
+# Test manual start
 sudo -i -u clawdbot
 cd ~/clawdbot
 pnpm start
 ```
 
-### Docker 沙箱问题
+### Docker sandbox issues
 
 ```bash
-# 验证 Docker 是否正在运行
+# Verify Docker is running
 sudo systemctl status docker
 
-# 检查沙箱镜像
+# Check sandbox image
 sudo docker images | grep clawdbot-sandbox
 
-# 如缺少则构建沙箱镜像
+# Build sandbox image if missing
 cd /opt/clawdbot/clawdbot
 sudo -u clawdbot ./scripts/sandbox-setup.sh
 ```
 
-### 提供商登录失败
+### Provider login fails
 
-确保您以 `clawdbot` 用户身份运行：
+Make sure you're running as the `clawdbot` user:
 
 ```bash
 sudo -i -u clawdbot
-clawdbot-cn channels login
+clawdbot channels login
 ```
 
-## 高级配置
+## Advanced Configuration
 
-有关详细的安全架构和故障排除：
-- [安全架构](https://github.com/clawdbot/clawdbot-ansible/blob/main/docs/security.md)
-- [技术详情](https://github.com/clawdbot/clawdbot-ansible/blob/main/docs/architecture.md)
-- [故障排除指南](https://github.com/clawdbot/clawdbot-ansible/blob/main/docs/troubleshooting.md)
+For detailed security architecture and troubleshooting:
+- [Security Architecture](https://github.com/jiulingyun/clawdbot-chinese-ansible/blob/main/docs/security.md)
+- [Technical Details](https://github.com/jiulingyun/clawdbot-chinese-ansible/blob/main/docs/architecture.md)
+- [Troubleshooting Guide](https://github.com/jiulingyun/clawdbot-chinese-ansible/blob/main/docs/troubleshooting.md)
 
-## 相关
+## Related
 
-- [clawdbot-ansible](https://github.com/clawdbot/clawdbot-ansible) — 完整部署指南
-- [Docker](/install/docker) — 容器化网关设置
-- [沙箱](/gateway/sandboxing) — 代理沙箱配置
-- [多代理沙箱和工具](/multi-agent-sandbox-tools) — 每个代理隔离
+- [clawdbot-ansible](https://github.com/jiulingyun/clawdbot-chinese-ansible) — full deployment guide
+- [Docker](/install/docker) — containerized gateway setup
+- [Sandboxing](/gateway/sandboxing) — agent sandbox configuration
+- [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools) — per-agent isolation

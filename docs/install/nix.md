@@ -1,94 +1,95 @@
 ---
-summary: "使用 Nix 声明式安装 Clawdbot"
+summary: "Install Clawdbot declaratively with Nix"
 read_when:
-  - 您想要可重现、可回滚的安装
-  - 您已经在使用 Nix/NixOS/Home Manager
-  - 您想要一切都被固定并声明式管理
+  - You want reproducible, rollback-able installs
+  - You're already using Nix/NixOS/Home Manager
+  - You want everything pinned and managed declaratively
 ---
 
-# Nix 安装
+# Nix Installation
 
-使用 Nix 运行 Clawdbot 的推荐方式是通过 **[nix-clawdbot](https://github.com/clawdbot/nix-clawdbot)** — 一个功能齐全的 Home Manager 模块。
+The recommended way to run Clawdbot with Nix is via **[nix-clawdbot](https://github.com/clawdbot/nix-clawdbot)** — a batteries-included Home Manager module.
 
-## 快速开始
+## Quick Start
 
-将此粘贴到您的 AI 代理（Claude、Cursor 等）中：
+Paste this to your AI agent (Claude, Cursor, etc.):
 
 ```text
-我想在我的 Mac 上设置 nix-clawdbot。
-仓库：github:clawdbot/nix-clawdbot
+I want to set up nix-clawdbot on my Mac.
+Repository: github:clawdbot/nix-clawdbot
 
-我需要您做的是：
-1. 检查是否已安装 Determinate Nix（如果没有，请安装）
-2. 在 ~/code/clawdbot-local 使用 templates/agent-first/flake.nix 创建本地 flake
-3. 帮助我创建一个 Telegram 机器人（@BotFather）并获取我的聊天 ID（@userinfobot）
-4. 设置密钥（机器人令牌、Anthropic 密钥）—— ~/.secrets/ 中的普通文件即可
-5. 填入模板占位符并运行 home-manager switch
-6. 验证：launchd 正在运行，机器人响应消息
+What I need you to do:
+1. Check if Determinate Nix is installed (if not, install it)
+2. Create a local flake at ~/code/clawdbot-local using templates/agent-first/flake.nix
+3. Help me create a Telegram bot (@BotFather) and get my chat ID (@userinfobot)
+4. Set up secrets (bot token, Anthropic key) - plain files at ~/.secrets/ is fine
+5. Fill in the template placeholders and run home-manager switch
+6. Verify: launchd running, bot responds to messages
 
-参考 nix-clawdbot README 了解模块选项。
+Reference the nix-clawdbot README for module options.
 ```
 
-> **📦 完整指南：[github.com/clawdbot/nix-clawdbot](https://github.com/clawdbot/nix-clawdbot)**
+> **📦 Full guide: [github.com/clawdbot/nix-clawdbot](https://github.com/clawdbot/nix-clawdbot)**
 >
-> nix-clawdbot 仓库是 Nix 安装的真实来源。本页只是一个快速概览。
+> The nix-clawdbot repo is the source of truth for Nix installation. This page is just a quick overview.
 
-## 您得到的功能
+## What you get
 
-- 网关 + macOS 应用 + 工具（whisper、spotify、摄像头）—— 全部被固定
-- 能够在重启后存活的 Launchd 服务
-- 具有声明式配置的插件系统
-- 即时回滚：`home-manager switch --rollback`
+- Gateway + macOS app + tools (whisper, spotify, cameras) — all pinned
+- Launchd service that survives reboots
+- Plugin system with declarative config
+- Instant rollback: `home-manager switch --rollback`
 
 ---
 
-## Nix 模式运行时行为
+## Nix Mode Runtime Behavior
 
-当设置 `CLAWDBOT_NIX_MODE=1` 时（与 nix-clawdbot 自动配合）：
+When `CLAWDBOT_NIX_MODE=1` is set (automatic with nix-clawdbot):
 
-Clawdbot 支持一种**Nix 模式**，使配置确定化并禁用自动安装流程。
-通过导出来启用它：
+Clawdbot supports a **Nix mode** that makes configuration deterministic and disables auto-install flows.
+Enable it by exporting:
 
 ```bash
 CLAWDBOT_NIX_MODE=1
 ```
 
-在 macOS 上，GUI 应用不会自动继承 shell 环境变量。您也可以通过默认值启用 Nix 模式：
+On macOS, the GUI app does not automatically inherit shell env vars. You can
+also enable Nix mode via defaults:
 
 ```bash
 defaults write com.clawdbot.mac clawdbot.nixMode -bool true
 ```
 
-### 配置 + 状态路径
+### Config + state paths
 
-Clawdbot 从 `CLAWDBOT_CONFIG_PATH` 读取 JSON5 配置并在 `CLAWDBOT_STATE_DIR` 中存储可变数据。
+Clawdbot reads JSON5 config from `CLAWDBOT_CONFIG_PATH` and stores mutable data in `CLAWDBOT_STATE_DIR`.
 
-- `CLAWDBOT_STATE_DIR`（默认：`~/.clawdbot`）
-- `CLAWDBOT_CONFIG_PATH`（默认：`$CLAWDBOT_STATE_DIR/clawdbot.json`）
+- `CLAWDBOT_STATE_DIR` (default: `~/.clawdbot`)
+- `CLAWDBOT_CONFIG_PATH` (default: `$CLAWDBOT_STATE_DIR/clawdbot.json`)
 
-在 Nix 下运行时，将这些显式设置为 Nix 管理的位置，以便运行时状态和配置
-保持在不可变存储之外。
+When running under Nix, set these explicitly to Nix-managed locations so runtime state and config
+stay out of the immutable store.
 
-### Nix 模式下的运行时行为
+### Runtime behavior in Nix mode
 
-- 自动安装和自我变异流程被禁用
-- 缺少依赖项时显示特定于 Nix 的解决方案消息
-- UI 在存在时显示只读 Nix 模式横幅
+- Auto-install and self-mutation flows are disabled
+- Missing dependencies surface Nix-specific remediation messages
+- UI surfaces a read-only Nix mode banner when present
 
-## 打包说明（macOS）
+## Packaging note (macOS)
 
-macOS 打包流程期望在以下位置有一个稳定的 Info.plist 模板：
+The macOS packaging flow expects a stable Info.plist template at:
 
 ```
 apps/macos/Sources/Clawdbot/Resources/Info.plist
 ```
 
-[`scripts/package-mac-app.sh`](https://github.com/clawdbot/clawdbot/blob/main/scripts/package-mac-app.sh) 将此模板复制到应用包中并修补动态字段
-（包 ID、版本/构建、Git SHA、Sparkle 密钥）。这使得 plist 对 SwiftPM
-打包和 Nix 构建（不依赖完整的 Xcode 工具链）保持确定性。
+[`scripts/package-mac-app.sh`](https://github.com/jiulingyun/clawdbot-chinese/blob/main/scripts/package-mac-app.sh) copies this template into the app bundle and patches dynamic fields
+(bundle ID, version/build, Git SHA, Sparkle keys). This keeps the plist deterministic for SwiftPM
+packaging and Nix builds (which do not rely on a full Xcode toolchain).
 
-## 相关
+## Related
 
-- [nix-clawdbot](https://github.com/clawdbot/nix-clawdbot) — 完整设置指南
-- [向导](/start/wizard) — 非 Nix CLI 设置
-- [Docker](/install/docker) — 容器化设置
+- [nix-clawdbot](https://github.com/clawdbot/nix-clawdbot) — full setup guide
+- [Wizard](/start/wizard) — non-Nix CLI setup
+- [Docker](/install/docker) — containerized setup

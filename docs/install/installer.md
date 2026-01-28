@@ -23,10 +23,10 @@ curl -fsSL https://clawd.org.cn/install.sh | bash -s -- --help
 Windows (PowerShell) 帮助：
 
 ```powershell
-& ([scriptblock]::Create((iwr -useb https://clawd.org.cn/install.ps1))) -?
+iwr -useb https://clawd.org.cn/install.ps1 -OutFile install.ps1; .\install.ps1 -Help
 ```
 
-如果安装器完成但在新终端中找不到 `clawdbot-cn`，通常是 Node/npm PATH 问题。参见：[安装](/install#nodejs--npm-path-sanity)。
+如果安装器完成但在新终端中找不到 `moltbot-cn`，通常是 Node/npm PATH 问题。参见：[安装](/install#nodejs--npm-path-sanity)。
 
 ## install.sh（推荐）
 
@@ -35,11 +35,11 @@ Windows (PowerShell) 帮助：
 - 检测操作系统（macOS / Linux / WSL）。
 - 确保 Node.js **22+**（macOS 通过 Homebrew；Linux 通过 NodeSource）。
 - 选择安装方式：
-  - `npm`（默认）：`npm install -g clawdbot-cn@latest`
+  - `npm`（默认）：`npm install -g moltbot-cn@latest`
   - `git`：克隆/构建源码检出并安装包装脚本
 - 在 Linux 上：通过将 npm 前缀切换到 `~/.npm-global` 来避免全局 npm 权限错误。
-- 如果升级现有安装：运行 `clawdbot-cn doctor --non-interactive`（尽力而为）。
-- 对于 git 安装：安装/更新后运行 `clawdbot-cn doctor --non-interactive`（尽力而为）。
+- 如果升级现有安装：运行 `moltbot-cn doctor --non-interactive`（尽力而为）。
+- 对于 git 安装：安装/更新后运行 `moltbot-cn doctor --non-interactive`（尽力而为）。
 - 通过默认 `SHARP_IGNORE_GLOBAL_LIBVIPS=1` 缓解 `sharp` 原生安装问题（避免针对系统 libvips 构建）。
 
 如果你*想要* `sharp` 链接到全局安装的 libvips（或正在调试），设置：
@@ -73,7 +73,7 @@ Git 对于 `--install-method git` 路径（克隆 / 拉取）是必需的。
 
 ## install-cli.sh（非 root CLI 安装器）
 
-此脚本将 `clawdbot-cn` 安装到前缀目录（默认：`~/.clawdbot`），并在该前缀下安装专用的 Node 运行时，因此可以在不想触及系统 Node/npm 的机器上工作。
+此脚本将 `moltbot-cn` 安装到前缀目录（默认：`~/.clawdbot`），并在该前缀下安装专用的 Node 运行时，因此可以在不想触及系统 Node/npm 的机器上工作。
 
 帮助：
 
@@ -87,9 +87,9 @@ curl -fsSL https://clawd.org.cn/install-cli.sh | bash -s -- --help
 
 - 确保 Node.js **22+**（winget/Chocolatey/Scoop 或手动）。
 - 选择安装方式：
-  - `npm`（默认）：`npm install -g clawdbot-cn@latest`
+  - `npm`（默认）：`npm install -g moltbot-cn@latest`
   - `git`：克隆/构建源码检出并安装包装脚本
-- 在升级和 git 安装时运行 `clawdbot-cn doctor --non-interactive`（尽力而为）。
+- 在升级和 git 安装时运行 `moltbot-cn doctor --non-interactive`（尽力而为）。
 
 示例：
 
@@ -117,4 +117,4 @@ Git 要求：
 常见 Windows 问题：
 
 - **npm error spawn git / ENOENT**：安装 Git for Windows 并重新打开 PowerShell，然后重新运行安装器。
-- **"clawdbot-cn" 无法识别**：你的 npm 全局 bin 文件夹不在 PATH 中。大多数系统使用 `%AppData%\\npm`。你也可以运行 `npm config get prefix` 并将 `\\bin` 添加到 PATH，然后重新打开 PowerShell。
+- **"moltbot-cn" 无法识别**：你的 npm 全局 bin 文件夹不在 PATH 中。大多数系统使用 `%AppData%\\npm`。你也可以运行 `npm config get prefix` 并将 `\\bin` 添加到 PATH，然后重新打开 PowerShell。

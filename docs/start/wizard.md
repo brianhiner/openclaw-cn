@@ -13,17 +13,17 @@ read_when:
 主要入口点：
 
 ```bash
-clawdbot-cn onboard
+moltbot-cn onboard
 ```
 
 后续重新配置：
 
 ```bash
-clawdbot-cn configure
+moltbot-cn configure
 ```
 
 推荐：设置一个 Brave Search API 密钥，以便代理可以使用 `web_search`
-（`web_fetch` 不需要密钥即可工作）。最简单的路径：`clawdbot-cn configure --section web`
+（`web_fetch` 不需要密钥即可工作）。最简单的路径：`moltbot-cn configure --section web`
 它会存储 `tools.web.search.apiKey`。文档：[Web 工具](/tools/web)。
 
 ## 快速启动 vs 高级
@@ -57,7 +57,7 @@ clawdbot-cn configure
 要添加更多隔离代理（独立工作区 + 会话 + 认证），请使用：
 
 ```bash
-clawdbot-cn agents add <name>
+moltbot-cn agents add <name>
 ```
 
 提示：`--json` **不**表示非交互模式。脚本请使用 `--non-interactive`（和 `--workspace`）。
@@ -68,7 +68,7 @@ clawdbot-cn agents add <name>
    - 重新运行向导**不会**清除任何内容，除非您明确选择 **重置**
      （或传递 `--reset`）。
    - 如果配置无效或包含旧密钥，向导会停止并要求
-     您在继续之前运行 `clawdbot-cn doctor`。
+     您在继续之前运行 `moltbot-cn doctor`。
    - 重置使用 `trash`（从不使用 `rm`）并提供范围：
      - 仅配置
      - 配置 + 凭据 + 会话
@@ -118,7 +118,7 @@ clawdbot-cn agents add <name>
   - Mattermost（插件）：机器人令牌 + 基础 URL。
    - Signal：可选 `signal-cli` 安装 + 账户配置。
    - iMessage：本地 `imsg` CLI 路径 + 数据库访问。
-  - 私信安全：默认为配对。第一次私信发送代码；通过 `clawdbot-cn pairing approve <channel> <code>` 批准或使用白名单。
+  - 私信安全：默认为配对。第一次私信发送代码；通过 `moltbot-cn pairing approve <channel> <code>` 批准或使用白名单。
 6) **守护进程安装**
    - macOS: LaunchAgent
      - 需要登录的用户会话；对于无头模式，使用自定义 LaunchDaemon（未提供）。
@@ -128,8 +128,8 @@ clawdbot-cn agents add <name>
    - **运行时选择：** Node（推荐；WhatsApp/Telegram 必需）。**不推荐**使用 Bun。
 
 7) **健康检查**
-   - 启动网关（如果需要）并运行 `clawdbot-cn health`。
-   - 提示：`clawdbot-cn status --deep` 将网关健康探测添加到状态输出（需要可访问的网关）。
+   - 启动网关（如果需要）并运行 `moltbot-cn health`。
+   - 提示：`moltbot-cn status --deep` 将网关健康探测添加到状态输出（需要可访问的网关）。
 
 8) **技能（推荐）**
    - 读取可用技能并检查要求。
@@ -158,7 +158,7 @@ clawdbot-cn agents add <name>
 
 ## 添加另一个代理
 
-使用 `clawdbot-cn agents add <name>` 创建具有自己工作区、会话和认证配置文件的独立代理。不使用 `--workspace` 运行会启动向导。
+使用 `moltbot-cn agents add <name>` 创建具有自己工作区、会话和认证配置文件的独立代理。不使用 `--workspace` 运行会启动向导。
 
 它设置：
 - `agents.list[].name`
@@ -174,7 +174,7 @@ clawdbot-cn agents add <name>
 使用 `--non-interactive` 自动化或脚本化入门：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice apiKey \
   --anthropic-api-key "$ANTHROPIC_API_KEY" \
@@ -190,7 +190,7 @@ clawdbot-cn onboard --non-interactive \
 Gemini 示例：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice gemini-api-key \
   --gemini-api-key "$GEMINI_API_KEY" \
@@ -201,7 +201,7 @@ clawdbot-cn onboard --non-interactive \
 Z.AI 示例：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice zai-api-key \
   --zai-api-key "$ZAI_API_KEY" \
@@ -212,7 +212,7 @@ clawdbot-cn onboard --non-interactive \
 Vercel AI 网关示例：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice ai-gateway-api-key \
   --ai-gateway-api-key "$AI_GATEWAY_API_KEY" \
@@ -223,7 +223,7 @@ clawdbot-cn onboard --non-interactive \
 Moonshot 示例：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice moonshot-api-key \
   --moonshot-api-key "$MOONSHOT_API_KEY" \
@@ -234,7 +234,7 @@ clawdbot-cn onboard --non-interactive \
 Synthetic 示例：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice synthetic-api-key \
   --synthetic-api-key "$SYNTHETIC_API_KEY" \
@@ -245,7 +245,7 @@ clawdbot-cn onboard --non-interactive \
 OpenCode Zen 示例：
 
 ```bash
-clawdbot-cn onboard --non-interactive \
+moltbot-cn onboard --non-interactive \
   --mode local \
   --auth-choice opencode-zen \
   --opencode-zen-api-key "$OPENCODE_API_KEY" \
@@ -256,7 +256,7 @@ clawdbot-cn onboard --non-interactive \
 添加代理（非交互式）示例：
 
 ```bash
-clawdbot-cn agents add work \
+moltbot-cn agents add work \
   --workspace ~/clawd-work \
   --model openai/gpt-5.2 \
   --bind whatsapp:biz \
@@ -296,7 +296,7 @@ clawdbot-cn agents add work \
 - `wizard.lastRunCommand`
 - `wizard.lastRunMode`
 
-`clawdbot-cn agents add` 写入 `agents.list[]` 和可选的 `bindings`。
+`moltbot-cn agents add` 写入 `agents.list[]` 和可选的 `bindings`。
 
 WhatsApp 凭据位于 `~/.clawdbot/credentials/whatsapp/<accountId>/` 下。
 会话存储在 `~/.clawdbot/agents/<agentId>/sessions/` 下。

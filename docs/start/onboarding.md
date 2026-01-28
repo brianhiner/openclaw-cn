@@ -81,7 +81,7 @@ macOS 应用支持 Anthropic OAuth（Claude Pro/Max）。流程：
 Gmail Pub/Sub 设置目前是一个手动步骤。使用：
 
 ```bash
-clawdbot-cn webhooks gmail setup --account you@gmail.com
+moltbot-cn webhooks gmail setup --account you@gmail.com
 ```
 
 详情请参见 [/automation/gmail-pubsub](/automation/gmail-pubsub)。

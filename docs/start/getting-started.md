@@ -9,7 +9,7 @@ read_when:
 
 目标：尽可能快地从**零** → **首次可用聊天**（使用合理默认值）。
 
-推荐路径：使用**CLI 入门向导**（`clawdbot-cn onboard`）。它会设置：
+推荐路径：使用**CLI 入门向导**（`moltbot-cn onboard`）。它会设置：
 - 模型/认证（推荐 OAuth）
 - 网关设置
 - 通道（WhatsApp/Telegram/Discord/Mattermost（插件）/...）
@@ -41,7 +41,7 @@ read_when:
 - Node `>=22`
 - `pnpm`（可选；如果从源码构建则推荐）
 - **推荐：** 用于网络搜索的 Brave Search API 密钥。最简单的路径：
-  `clawdbot-cn configure --section web`（存储 `tools.web.search.apiKey`）。
+  `moltbot-cn configure --section web`（存储 `tools.web.search.apiKey`）。
   参见 [Web 工具](/tools/web)。
 
 macOS：如果计划构建应用程序，请安装 Xcode / CLT。仅 CLI + 网关的话，Node 就足够了。
@@ -64,17 +64,17 @@ iwr -useb https://clawd.org.cn/install.ps1 | iex
 替代方案（全局安装）：
 
 ```bash
-npm install -g clawdbot-cn@latest
+npm install -g moltbot-cn@latest
 ```
 
 ```bash
-pnpm add -g clawdbot-cn@latest
+pnpm add -g moltbot-cn@latest
 ```
 
 ## 2) 运行入门向导（并安装服务）
 
 ```bash
-clawdbot-cn onboard --install-daemon
+moltbot-cn onboard --install-daemon
 ```
 
 您将选择：
@@ -101,13 +101,13 @@ clawdbot-cn onboard --install-daemon
 如果您在入门过程中安装了服务，网关应该已经在运行：
 
 ```bash
-clawdbot-cn gateway status
+moltbot-cn gateway status
 ```
 
 手动运行（前台）：
 
 ```bash
-clawdbot-cn gateway --port 18789 --verbose
+moltbot-cn gateway --port 18789 --verbose
 ```
 
 仪表板（本地回环）：`http://127.0.0.1:18789/`
@@ -118,8 +118,8 @@ clawdbot-cn gateway --port 18789 --verbose
 ## 3.5) 快速验证（2 分钟）
 
 ```bash
-clawdbot-cn status
-clawdbot-cn health
+moltbot-cn status
+moltbot-cn health
 ```
 
 ## 4) 配对 + 连接您的首个聊天界面
@@ -127,7 +127,7 @@ clawdbot-cn health
 ### WhatsApp（二维码登录）
 
 ```bash
-clawdbot-cn channels login
+moltbot-cn channels login
 ```
 
 通过 WhatsApp → 设置 → 已连接的设备 扫描。
@@ -148,8 +148,8 @@ WhatsApp 文档：[WhatsApp](/channels/whatsapp)
 如果您的首次私信没有得到回复，请批准配对：
 
 ```bash
-clawdbot-cn pairing list whatsapp
-clawdbot-cn pairing approve whatsapp <code>
+moltbot-cn pairing list whatsapp
+moltbot-cn pairing approve whatsapp <code>
 ```
 
 配对文档：[配对](/start/pairing)
@@ -164,10 +164,10 @@ cd clawdbot
 pnpm install
 pnpm ui:build # 首次运行时自动安装 UI 依赖
 pnpm build
-clawdbot-cn onboard --install-daemon
+moltbot-cn onboard --install-daemon
 ```
 
-如果您还没有全局安装，请从仓库中通过 `pnpm clawdbot-cn ...` 运行入门步骤。
+如果您还没有全局安装，请从仓库中通过 `pnpm moltbot-cn ...` 运行入门步骤。
 
 网关（来自此仓库）：
 
@@ -180,13 +180,13 @@ node dist/entry.js gateway --port 18789 --verbose
 在新的终端中，发送一条测试消息：
 
 ```bash
-clawdbot-cn message send --target +15555550123 --message "Hello from Clawdbot"
+moltbot-cn message send --target +15555550123 --message "Hello from Clawdbot"
 ```
 
-如果 `clawdbot-cn health` 显示 "no auth configured"，请返回向导并设置 OAuth/密钥认证 — 代理在没有它的情况下无法响应。
+如果 `moltbot-cn health` 显示 "no auth configured"，请返回向导并设置 OAuth/密钥认证 — 代理在没有它的情况下无法响应。
 
-提示：`clawdbot-cn status --all` 是最佳的可粘贴只读调试报告。
-健康检查：`clawdbot-cn health`（或 `clawdbot-cn status --deep`）向运行中的网关请求健康快照。
+提示：`moltbot-cn status --all` 是最佳的可粘贴只读调试报告。
+健康检查：`moltbot-cn health`（或 `moltbot-cn status --deep`）向运行中的网关请求健康快照。
 
 ## 下一步（可选，但很棒）
 

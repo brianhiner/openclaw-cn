@@ -26,8 +26,8 @@ Clawdbot 是一个用于 **Pi** 代理的 WhatsApp + Telegram + Discord + iMessa
 - 助手的第二个电话号码（SIM/eSIM/预付费）
 
 ```bash
-npm install -g clawdbot-cn@latest
-# 或：pnpm add -g clawdbot-cn@latest
+npm install -g moltbot-cn@latest
+# 或：pnpm add -g moltbot-cn@latest
 ```
 
 从源码（开发）：
@@ -66,13 +66,13 @@ pnpm link --global
 1) 配对 WhatsApp Web（显示二维码；用助手手机扫描）：
 
 ```bash
-clawdbot-cn channels login
+moltbot-cn channels login
 ```
 
 2) 启动网关（保持运行）：
 
 ```bash
-clawdbot-cn gateway --port 18789
+moltbot-cn gateway --port 18789
 ```
 
 3) 在 `~/.clawdbot/clawdbot.json` 中放置最小配置：
@@ -85,7 +85,7 @@ clawdbot-cn gateway --port 18789
 
 现在从您的白名单手机向助手号码发送消息。
 
-入门完成后，我们会自动打开带有网关令牌的仪表板并打印令牌化链接。稍后重新打开：`clawdbot-cn dashboard`。
+入门完成后，我们会自动打开带有网关令牌的仪表板并打印令牌化链接。稍后重新打开：`moltbot-cn dashboard`。
 ## 给代理一个工作空间（AGENTS）
 
 Clawd 从其工作空间目录读取操作指令和 "记忆"。
@@ -95,7 +95,7 @@ Clawd 从其工作空间目录读取操作指令和 "记忆"。
 提示：将此文件夹视为 Clawd 的 "记忆" 并将其设为 git 仓库（理想情况下是私有的），以便备份您的 `AGENTS.md` + 记忆文件。如果安装了 git，全新的工作空间会自动初始化。
 
 ```bash
-clawdbot-cn setup
+moltbot-cn setup
 ```
 
 完整的工作空间布局 + 备份指南：[代理工作空间](/concepts/agent-workspace)
@@ -206,10 +206,10 @@ Clawdbot 提取这些并随文本一起作为媒体发送。
 ## 操作清单
 
 ```bash
-clawdbot-cn status          # 本地状态（凭据、会话、排队事件）
-clawdbot-cn status --all    # 完整诊断（只读、可粘贴）
-clawdbot-cn status --deep   # 添加网关健康检查（Telegram + Discord）
-clawdbot-cn health --json   # 网关健康快照（WS）
+moltbot-cn status          # 本地状态（凭据、会话、排队事件）
+moltbot-cn status --all    # 完整诊断（只读、可粘贴）
+moltbot-cn status --deep   # 添加网关健康检查（Telegram + Discord）
+moltbot-cn health --json   # 网关健康快照（WS）
 ```
 
 日志位于 `/tmp/clawdbot/` 下（默认：`clawdbot-YYYY-MM-DD.log`）。

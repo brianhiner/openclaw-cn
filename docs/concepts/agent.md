@@ -11,7 +11,7 @@ Clawdbot runs a single embedded agent runtime derived from **p-mono**.
 
 Clawdbot uses a single agent workspace directory (`agents.defaults.workspace`) as the agent’s **only** working directory (`cwd`) for tools and context.
 
-Recommended: use `clawdbot setup` to create `~/.clawdbot-cn/clawdbot-cn.json` if missing and initialize the workspace files.
+Recommended: use `clawdbot setup` to create `~/.moltbot/moltbot.json` if missing and initialize the workspace files.
 
 Full workspace layout + backup guide: [Agent workspace](/concepts/agent-workspace)
 

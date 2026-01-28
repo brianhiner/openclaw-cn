@@ -1,7 +1,7 @@
 ---
 summary: "Node.js + npm 安装指南：版本、PATH 和全局安装"
 read_when:
-  - 安装了 Clawdbot 但 `clawdbot-cn` 显示"命令未找到"
+  - 安装了 Clawdbot 但 `moltbot-cn` 显示"命令未找到"
   - 在新机器上设置 Node.js/npm
   - `npm install -g ...` 因权限或 PATH 问题失败
 ---
@@ -10,7 +10,7 @@ read_when:
 
 Clawdbot 的运行时基准是 **Node 22+**。
 
-如果你能运行 `npm install -g clawdbot-cn@latest` 但之后看到 `clawdbot-cn: command not found`，几乎总是 **PATH** 问题：npm 放置全局二进制文件的目录不在你的 shell PATH 中。
+如果你能运行 `npm install -g moltbot-cn@latest` 但之后看到 `moltbot-cn: command not found`，几乎总是 **PATH** 问题：npm 放置全局二进制文件的目录不在你的 shell PATH 中。
 
 ## 快速诊断
 
@@ -23,7 +23,7 @@ npm prefix -g
 echo "$PATH"
 ```
 
-如果 `$(npm prefix -g)/bin`（macOS/Linux）或 `$(npm prefix -g)`（Windows）**不在** `echo "$PATH"` 输出中，你的 shell 找不到全局 npm 二进制文件（包括 `clawdbot-cn`）。
+如果 `$(npm prefix -g)/bin`（macOS/Linux）或 `$(npm prefix -g)`（Windows）**不在** `echo "$PATH"` 输出中，你的 shell 找不到全局 npm 二进制文件（包括 `moltbot-cn`）。
 
 ## 修复：将 npm 的全局 bin 目录添加到 PATH
 

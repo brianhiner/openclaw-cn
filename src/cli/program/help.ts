@@ -5,37 +5,37 @@ import { formatCliBannerLine, hasEmittedCliBanner } from "../banner.js";
 import type { ProgramContext } from "./context.js";
 
 const EXAMPLES = [
-  ["clawdbot-cn channels login --verbose", "连接个人 WhatsApp Web 并显示二维码和连接日志。"],
+  ["moltbot-cn channels login --verbose", "连接个人 WhatsApp Web 并显示二维码和连接日志。"],
   [
-    'clawdbot-cn message send --target +15555550123 --message "Hi" --json',
+    'moltbot-cn message send --target +15555550123 --message "Hi" --json',
     "通过你的 Web 会话发送消息并输出 JSON 结果。",
   ],
-  ["clawdbot-cn gateway --port 18789", "在本地运行 WebSocket 网关。"],
-  ["clawdbot-cn --dev gateway", "在 ws://127.0.0.1:19001 运行开发网关（隔离状态/配置）。"],
-  ["clawdbot-cn gateway --force", "终止占用默认网关端口的进程，然后启动网关。"],
-  ["clawdbot-cn gateway ...", "通过 WebSocket 控制网关。"],
+  ["moltbot-cn gateway --port 18789", "在本地运行 WebSocket 网关。"],
+  ["moltbot-cn --dev gateway", "在 ws://127.0.0.1:19001 运行开发网关（隔离状态/配置）。"],
+  ["moltbot-cn gateway --force", "终止占用默认网关端口的进程，然后启动网关。"],
+  ["moltbot-cn gateway ...", "通过 WebSocket 控制网关。"],
   [
-    'clawdbot-cn agent --to +15555550123 --message "Run summary" --deliver',
+    'moltbot-cn agent --to +15555550123 --message "Run summary" --deliver',
     "通过网关与智能体直接对话；可选择发送 WhatsApp 回复。",
   ],
   [
-    'clawdbot-cn message send --channel telegram --target @mychat --message "Hi"',
+    'moltbot-cn message send --channel telegram --target @mychat --message "Hi"',
     "通过你的 Telegram 机器人发送消息。",
   ],
 ] as const;
 
 export function configureProgramHelp(program: Command, ctx: ProgramContext) {
   program
-    .name("clawdbot-cn")
+    .name("moltbot-cn")
     .description("")
     .version(ctx.programVersion)
     .option(
       "--dev",
-      "开发模式：将状态隔离到 ~/.clawdbot-cn-dev，默认网关端口 19001，并调整派生端口（浏览器/画布）",
+      "开发模式：将状态隔离到 ~/.moltbot-cn-dev，默认网关端口 19001，并调整派生端口（浏览器/画布）",
     )
     .option(
       "--profile <name>",
-      "使用命名配置文件（将 CLAWDBOT_STATE_DIR/CLAWDBOT_CONFIG_PATH 隔离到 ~/.clawdbot-cn-<name>）",
+      "使用命名配置文件（将 MOLTBOT_STATE_DIR/MOLTBOT_CONFIG_PATH 隔离到 ~/.moltbot-cn-<name>）",
     );
 
   program.option("--no-color", "禁用 ANSI 颜色", false);

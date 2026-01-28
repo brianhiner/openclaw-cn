@@ -29,8 +29,8 @@ read_when:
 ### 批准发送者
 
 ```bash
-clawdbot-cn pairing list telegram
-clawdbot-cn pairing approve telegram <CODE>
+moltbot-cn pairing list telegram
+moltbot-cn pairing approve telegram <CODE>
 ```
 
 支持的通道：`telegram`、`whatsapp`、`signal`、`imessage`、`discord`、`slack`。
@@ -51,9 +51,9 @@ clawdbot-cn pairing approve telegram <CODE>
 ### 批准节点设备
 
 ```bash
-clawdbot-cn devices list
-clawdbot-cn devices approve <requestId>
-clawdbot-cn devices reject <requestId>
+moltbot-cn devices list
+moltbot-cn devices approve <requestId>
+moltbot-cn devices reject <requestId>
 ```
 
 ### 状态存储位置
@@ -64,7 +64,7 @@ clawdbot-cn devices reject <requestId>
 
 ### 注意
 
-- 旧版 `node.pair.*` API（CLI：`clawdbot-cn nodes pending/approve`）是一个
+- 旧版 `node.pair.*` API（CLI：`moltbot-cn nodes pending/approve`）是一个
   单独的网关拥有的配对存储。WS 节点仍需要设备配对。
 
 ## 相关文档

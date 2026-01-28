@@ -29,16 +29,16 @@ read_when:
 引导一次：
 
 ```bash
-clawdbot-cn setup
+moltbot-cn setup
 ```
 
 在此仓库内部，使用本地 CLI 入口：
 
 ```bash
-clawdbot-cn setup
+moltbot-cn setup
 ```
 
-如果您还没有全局安装，请通过 `pnpm clawdbot-cn setup` 运行它。
+如果您还没有全局安装，请通过 `pnpm moltbot-cn setup` 运行它。
 ## 稳定工作流程（先用 macOS 应用）
 
 1) 安装 + 启动 **Clawdbot.app**（菜单栏）。
@@ -47,17 +47,17 @@ clawdbot-cn setup
 4) 链接界面（示例：WhatsApp）：
 
 ```bash
-clawdbot-cn channels login
+moltbot-cn channels login
 ```
 
 5) 健康检查：
 
 ```bash
-clawdbot-cn health
+moltbot-cn health
 ```
 
 如果您的构建中不可用入门：
-- 运行 `clawdbot-cn setup`，然后 `clawdbot-cn channels login`，然后手动启动网关（`clawdbot-cn gateway`）。
+- 运行 `moltbot-cn setup`，然后 `moltbot-cn channels login`，然后手动启动网关（`moltbot-cn gateway`）。
 
 ## 前沿工作流程（网关在终端中）
 
@@ -93,7 +93,7 @@ pnpm gateway:watch
 - 或通过 CLI：
 
 ```bash
-clawdbot-cn health
+moltbot-cn health
 ```
 
 ### 常见错误

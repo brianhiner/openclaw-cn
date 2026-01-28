@@ -8,7 +8,7 @@ import { isTruthyEnvValue } from "./infra/env.js";
 import { installProcessWarningFilter } from "./infra/warnings.js";
 import { attachChildProcessBridge } from "./process/child-process-bridge.js";
 
-process.title = "clawdbot-cn";
+process.title = "moltbot-cn";
 installProcessWarningFilter();
 
 if (process.argv.includes("--no-color")) {
@@ -49,7 +49,7 @@ function ensureExperimentalWarningSuppressed(): boolean {
 
   child.once("error", (error) => {
     console.error(
-      "[clawdbot-cn] 重新生成CLI失败：",
+      "[moltbot-cn] 重新生成CLI失败：",
       error instanceof Error ? (error.stack ?? error.message) : error,
     );
     process.exit(1);
@@ -124,7 +124,7 @@ if (!ensureExperimentalWarningSuppressed()) {
   const parsed = parseCliProfileArgs(process.argv);
   if (!parsed.ok) {
     // Keep it simple; Commander will handle rich help/errors after we strip flags.
-    console.error(`[clawdbot-cn] ${parsed.error}`);
+    console.error(`[moltbot-cn] ${parsed.error}`);
     process.exit(2);
   }
 
@@ -138,7 +138,7 @@ if (!ensureExperimentalWarningSuppressed()) {
     .then(({ runCli }) => runCli(process.argv))
     .catch((error) => {
       console.error(
-        "[clawdbot-cn] 启动CLI失败：",
+        "[moltbot-cn] 启动CLI失败：",
         error instanceof Error ? (error.stack ?? error.message) : error,
       );
       process.exitCode = 1;

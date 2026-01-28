@@ -23,9 +23,9 @@ Clawdbot 发布三个更新渠道：
 Git 检出：
 
 ```bash
-clawdbot-cn update --channel stable
-clawdbot-cn update --channel beta
-clawdbot-cn update --channel dev
+moltbot-cn update --channel stable
+moltbot-cn update --channel beta
+moltbot-cn update --channel dev
 ```
 
 - `stable`/`beta` 检出最新的匹配标签（通常是相同标签）。
@@ -34,9 +34,9 @@ clawdbot-cn update --channel dev
 npm/pnpm 全局安装：
 
 ```bash
-clawdbot-cn update --channel stable
-clawdbot-cn update --channel beta
-clawdbot-cn update --channel dev
+moltbot-cn update --channel stable
+moltbot-cn update --channel beta
+moltbot-cn update --channel dev
 ```
 
 这通过相应的 npm 分发标签（`latest`，`beta`，`dev`）进行更新。

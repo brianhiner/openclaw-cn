@@ -82,7 +82,7 @@ macOS 打包流程期望在以下位置有稳定的 Info.plist 模板：
 apps/macos/Sources/Clawdbot/Resources/Info.plist
 ```
 
-[`scripts/package-mac-app.sh`](https://github.com/jiulingyun/clawdbot-chinese/blob/main/scripts/package-mac-app.sh) 将此模板复制到应用包中并修补动态字段
+[`scripts/package-mac-app.sh`](https://github.com/jiulingyun/moltbot-cn/blob/main/scripts/package-mac-app.sh) 将此模板复制到应用包中并修补动态字段
 （bundle ID、版本/构建号、Git SHA、Sparkle keys）。这使 plist 对于 SwiftPM 打包和 Nix 构建
 （不依赖完整 Xcode 工具链）保持确定性。
 

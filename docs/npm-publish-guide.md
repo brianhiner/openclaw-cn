@@ -1,6 +1,6 @@
 # npm 发布指南
 
-本文档说明如何将 `clawdbot-cn` 发布到 npm。
+本文档说明如何将 `moltbot-cn` 发布到 npm。
 
 ## 前置准备
 
@@ -37,7 +37,7 @@ pnpm pack
 这会生成一个 `.tgz` 文件，你可以测试安装：
 
 ```bash
-npm install -g ./clawdbot-cn-2026.1.25.tgz
+npm install -g ./moltbot-cn-2026.1.25.tgz
 ```
 
 ## 手动发布到 npm
@@ -99,13 +99,13 @@ pnpm publish --access public
 
 ```bash
 # 查看包信息
-npm view clawdbot-cn
+npm view moltbot-cn
 
 # 安装测试
-npm install -g clawdbot-cn
+npm install -g moltbot-cn
 
 # 验证版本
-clawdbot-cn --version
+moltbot-cn --version
 ```
 
 ## 版本管理建议
@@ -119,7 +119,7 @@ clawdbot-cn --version
 ## 常见问题
 
 ### 1. 发布失败：包名已存在
-确保包名 `clawdbot-cn` 在 npm 上可用。如果已被占用，需要更换包名。
+确保包名 `moltbot-cn` 在 npm 上可用。如果已被占用，需要更换包名。
 
 ### 2. 权限错误
 确保 `NPM_TOKEN` 配置正确，且有发布权限。
@@ -130,7 +130,7 @@ clawdbot-cn --version
 ### 4. 如何撤销发布
 发布后 72 小时内可以撤销：
 ```bash
-npm unpublish clawdbot-cn@2026.1.25
+npm unpublish moltbot-cn@2026.1.25
 ```
 
 ⚠️ **注意**：撤销后的版本号不能再次使用。

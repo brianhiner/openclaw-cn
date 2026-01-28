@@ -8,7 +8,7 @@ read_when:
 # 卸载
 
 两种方式：
-- **简单方式**：如果 `clawdbot-cn` 仍然安装。
+- **简单方式**：如果 `moltbot-cn` 仍然安装。
 - **手动服务删除**：如果 CLI 已删除但服务仍在运行。
 
 ## 简单方式（CLI 仍然安装）
@@ -16,14 +16,14 @@ read_when:
 推荐：使用内置卸载器：
 
 ```bash
-clawdbot-cn uninstall
+moltbot-cn uninstall
 ```
 
 非交互式（自动化 / npx）：
 
 ```bash
-clawdbot-cn uninstall --all --yes --non-interactive
-npx -y clawdbot-cn uninstall --all --yes --non-interactive
+moltbot-cn uninstall --all --yes --non-interactive
+npx -y moltbot-cn uninstall --all --yes --non-interactive
 ```
 
 手动步骤（相同效果）：
@@ -31,13 +31,13 @@ npx -y clawdbot-cn uninstall --all --yes --non-interactive
 1) 停止 gateway 服务：
 
 ```bash
-clawdbot-cn gateway stop
+moltbot-cn gateway stop
 ```
 
 2) 卸载 gateway 服务（launchd/systemd/schtasks）：
 
 ```bash
-clawdbot-cn gateway uninstall
+moltbot-cn gateway uninstall
 ```
 
 3) 删除状态 + 配置：
@@ -57,9 +57,9 @@ rm -rf ~/clawd
 5) 删除 CLI 安装（选择你使用的那个）：
 
 ```bash
-npm rm -g clawdbot-cn
-pnpm remove -g clawdbot-cn
-bun remove -g clawdbot-cn
+npm rm -g moltbot-cn
+pnpm remove -g moltbot-cn
+bun remove -g moltbot-cn
 ```
 
 6) 如果你安装了 macOS 应用：
@@ -74,7 +74,7 @@ rm -rf /Applications/Clawdbot.app
 
 ## 手动服务删除（CLI 未安装）
 
-如果 gateway 服务持续运行但 `clawdbot-cn` 丢失，使用此方法。
+如果 gateway 服务持续运行但 `moltbot-cn` 丢失，使用此方法。
 
 ### macOS（launchd）
 
@@ -113,12 +113,12 @@ Remove-Item -Force "$env:USERPROFILE\.clawdbot\gateway.cmd"
 
 ### 普通安装（install.sh / npm / pnpm / bun）
 
-如果你使用了 `https://clawd.org.cn/install.sh` 或 `install.ps1`，CLI 是用 `npm install -g clawdbot-cn@latest` 安装的。
-用 `npm rm -g clawdbot-cn`（或 `pnpm remove -g clawdbot-cn` / `bun remove -g clawdbot-cn`，如果你用那种方式安装的话）删除它。
+如果你使用了 `https://clawd.org.cn/install.sh` 或 `install.ps1`，CLI 是用 `npm install -g moltbot-cn@latest` 安装的。
+用 `npm rm -g moltbot-cn`（或 `pnpm remove -g moltbot-cn` / `bun remove -g moltbot-cn`，如果你用那种方式安装的话）删除它。
 
 ### 源码检出（git clone）
 
-如果你从仓库检出运行（`git clone` + `clawdbot-cn ...` / `bun run clawdbot-cn ...`）：
+如果你从仓库检出运行（`git clone` + `moltbot-cn ...` / `bun run moltbot-cn ...`）：
 
 1) 在删除仓库**之前**卸载 gateway 服务（使用上面的简单方式或手动服务删除）。
 2) 删除仓库目录。

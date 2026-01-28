@@ -1,40 +1,47 @@
 ---
-summary: "Fix Chrome/Brave/Edge/Chromium CDP startup issues for Clawdbot browser control on Linux"
-read_when: "Browser control fails on Linux, especially with snap Chromium"
+summary: "修复 Linux 上的 Chrome/Brave/Edge CDP 启动问题"
+read_when: "Linux 上浏览器控制失败，尤其是 snap 版 Chromium"
 ---
 
-# Browser Troubleshooting (Linux)
+# 浏览器故障排除（Linux）
 
-## Problem: "Failed to start Chrome CDP on port 18800"
+---
 
-Clawdbot's browser control server fails to launch Chrome/Brave/Edge/Chromium with the error:
+## 问题："Failed to start Chrome CDP on port 18800"
+
+浏览器控制服务器无法启动 Chrome/Brave/Edge，报错：
 ```
 {"error":"Error: Failed to start Chrome CDP on port 18800 for profile \"clawd\"."}
 ```
 
-### Root Cause
+### 原因
 
-On Ubuntu (and many Linux distros), the default Chromium installation is a **snap package**. Snap's AppArmor confinement interferes with how Clawdbot spawns and monitors the browser process.
+在 Ubuntu 和许多 Linux 发行版上，默认的 Chromium 是 **snap 包**。Snap 的 AppArmor 限制会干扰 Moltbot 启动和监控浏览器进程。
 
-The `apt install chromium` command installs a stub package that redirects to snap:
+运行 `apt install chromium` 实际上安装的是重定向到 snap 的存根包：
 ```
 Note, selecting 'chromium-browser' instead of 'chromium'
 chromium-browser is already the newest version (2:1snap1-0ubuntu2).
 ```
 
-This is NOT a real browser — it's just a wrapper.
+这**不是**真正的浏览器，只是一个包装器。
 
-### Solution 1: Install Google Chrome (Recommended)
+---
 
-Install the official Google Chrome `.deb` package, which is not sandboxed by snap:
+## 解决方案 1：安装 Google Chrome（推荐）
+
+安装官方 Google Chrome `.deb` 包，不受 snap 限制：
 
 ```bash
+# 下载并安装
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
-sudo apt --fix-broken install -y  # if there are dependency errors
+
+# 如果有依赖错误
+sudo apt --fix-broken install -y
 ```
 
-Then update your Clawdbot config (`~/.clawdbot/clawdbot.json`):
+然后更新配置 (`~/.moltbot/moltbot.json`)：
 
 ```json
 {
@@ -47,11 +54,14 @@ Then update your Clawdbot config (`~/.clawdbot/clawdbot.json`):
 }
 ```
 
-### Solution 2: Use Snap Chromium with Attach-Only Mode
+---
 
-If you must use snap Chromium, configure Clawdbot to attach to a manually-started browser:
+## 解决方案 2：使用 Snap Chromium + 仅附加模式
 
-1. Update config:
+如果必须使用 snap 版 Chromium，配置 Moltbot 附加到手动启动的浏览器：
+
+### 第一步：更新配置
+
 ```json
 {
   "browser": {
@@ -63,23 +73,26 @@ If you must use snap Chromium, configure Clawdbot to attach to a manually-starte
 }
 ```
 
-2. Start Chromium manually:
+### 第二步：手动启动 Chromium
+
 ```bash
 chromium-browser --headless --no-sandbox --disable-gpu \
   --remote-debugging-port=18800 \
-  --user-data-dir=$HOME/.clawdbot/browser/clawd/user-data \
+  --user-data-dir=$HOME/.moltbot/browser/clawd/user-data \
   about:blank &
 ```
 
-3. Optionally create a systemd user service to auto-start Chrome:
+### 第三步（可选）：创建 systemd 服务自动启动
+
+创建文件 `~/.config/systemd/user/moltbot-browser.service`：
+
 ```ini
-# ~/.config/systemd/user/clawd-browser.service
 [Unit]
-Description=Clawd Browser (Chrome CDP)
+Description=Moltbot Browser (Chrome CDP)
 After=network.target
 
 [Service]
-ExecStart=/snap/bin/chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=18800 --user-data-dir=%h/.clawdbot/browser/clawd/user-data about:blank
+ExecStart=/snap/bin/chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=18800 --user-data-dir=%h/.moltbot/browser/clawd/user-data about:blank
 Restart=on-failure
 RestartSec=5
 
@@ -87,43 +100,60 @@ RestartSec=5
 WantedBy=default.target
 ```
 
-Enable with: `systemctl --user enable --now clawd-browser.service`
+启用服务：
 
-### Verifying the Browser Works
-
-Check status:
 ```bash
-curl -s http://127.0.0.1:18791/ | jq '{running, pid, chosenBrowser}'
+systemctl --user enable --now moltbot-browser.service
 ```
 
-Test browsing:
+---
+
+## 验证浏览器工作正常
+
 ```bash
+# 检查状态
+curl -s http://127.0.0.1:18791/ | jq '{running, pid, chosenBrowser}'
+
+# 测试浏览
 curl -s -X POST http://127.0.0.1:18791/start
 curl -s http://127.0.0.1:18791/tabs
 ```
 
-### Config Reference
+---
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `browser.enabled` | Enable browser control | `true` |
-| `browser.executablePath` | Path to a Chromium-based browser binary (Chrome/Brave/Edge/Chromium) | auto-detected (prefers default browser when Chromium-based) |
-| `browser.headless` | Run without GUI | `false` |
-| `browser.noSandbox` | Add `--no-sandbox` flag (needed for some Linux setups) | `false` |
-| `browser.attachOnly` | Don't launch browser, only attach to existing | `false` |
-| `browser.cdpPort` | Chrome DevTools Protocol port | `18800` |
+## 配置参考
 
-### Problem: "Chrome extension relay is running, but no tab is connected"
+| 选项 | 说明 | 默认值 |
+|------|------|--------|
+| `browser.enabled` | 启用浏览器控制 | `true` |
+| `browser.executablePath` | 浏览器可执行文件路径 | 自动检测 |
+| `browser.headless` | 无头模式（不显示 GUI） | `false` |
+| `browser.noSandbox` | 添加 `--no-sandbox` 标志 | `false` |
+| `browser.attachOnly` | 仅附加到已运行的浏览器 | `false` |
+| `browser.cdpPort` | Chrome DevTools Protocol 端口 | `18800` |
 
-You’re using the `chrome` profile (extension relay). It expects the Clawdbot
-browser extension to be attached to a live tab.
+---
 
-Fix options:
-1. **Use the managed browser:** `clawdbot browser start --browser-profile clawd`
-   (or set `browser.defaultProfile: "clawd"`).
-2. **Use the extension relay:** install the extension, open a tab, and click the
-   Clawdbot extension icon to attach it.
+## 问题："Chrome extension relay is running, but no tab is connected"
 
-Notes:
-- The `chrome` profile uses your **system default Chromium browser** when possible.
-- Local `clawd` profiles auto-assign `cdpPort`/`cdpUrl`; only set those for remote CDP.
+您正在使用 `chrome` 配置文件（扩展中继），它需要将 Chrome 扩展附加到一个标签页。
+
+**解决方法：**
+
+1. **使用独立管理的浏览器：**
+   ```bash
+   moltbot-cn browser start --browser-profile clawd
+   ```
+   或设置 `browser.defaultProfile: "clawd"`
+
+2. **使用扩展中继：**
+   - 安装扩展
+   - 打开一个标签页
+   - 点击扩展图标附加
+
+---
+
+## 相关文档
+
+- [浏览器自动化](/tools/browser) - 主文档
+- [Chrome 扩展](/tools/chrome-extension) - 控制现有标签页

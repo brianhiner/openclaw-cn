@@ -1,5 +1,5 @@
-title: "Clawdbot Docs"
-description: "A TypeScript/Node gateway + macOS/iOS/Android companions for WhatsApp (web) and Telegram (bot)."
+title: "Moltbot 文档"
+description: "Moltbot (原 Clawdbot) - TypeScript/Node 网关 + macOS/iOS/Android 客户端，支持 WhatsApp (网页版) 和 Telegram (机器人)。支持自定义 AI 供应商，兼容 OpenAI API。"
 markdown: kramdown
 highlighter: rouge
 
@@ -20,9 +20,9 @@ defaults:
       layout: default
 
 nav:
-  - title: "Home"
+  - title: "首页"
     url: "/"
-  - title: "Clawdbot Assistant"
+  - title: "Moltbot 助手"
     url: "/start/clawd/"
   - title: "Gateway"
     url: "/gateway/"

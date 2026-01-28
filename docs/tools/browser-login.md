@@ -1,47 +1,56 @@
 ---
-summary: "Manual logins for browser automation + X/Twitter posting"
+summary: "浏览器手动登录 + X/Twitter 发帖"
 read_when:
-  - You need to log into sites for browser automation
-  - You want to post updates to X/Twitter
+  - 您需要在浏览器自动化中登录网站
+  - 您想通过 AI 助手发布 X/Twitter 更新
 ---
 
-# Browser login + X/Twitter posting
+# 浏览器登录 + X/Twitter 发帖
 
-## Manual login (recommended)
+## 手动登录（推荐）
 
-When a site requires login, **sign in manually** in the **host** browser profile (the clawd browser).
+当网站需要登录时，请在 **clawd 浏览器**（AI 控制的独立浏览器）中**手动登录**。
 
-Do **not** give the model your credentials. Automated logins often trigger anti‑bot defenses and can lock the account.
+**重要：** 不要把密码给 AI。自动登录通常会触发反机器人检测，可能导致账号被锁定。
 
-Back to the main browser docs: [Browser](/tools/browser).
+返回主文档：[浏览器自动化](/tools/browser)
 
-## Which Chrome profile is used?
+---
 
-Clawdbot controls a **dedicated Chrome profile** (named `clawd`, orange‑tinted UI). This is separate from your daily browser profile.
+## 哪个浏览器配置文件？
 
-Two easy ways to access it:
+Moltbot 控制的是一个**专用的 Chrome 配置文件**（名为 `clawd`，橙色 UI）。这与您的日常浏览器完全分开。
 
-1) **Ask the agent to open the browser** and then log in yourself.
-2) **Open it via CLI**:
+**两种方式访问该浏览器：**
+
+1. **让 AI 打开浏览器**，然后您自己登录
+2. **通过命令行打开**：
 
 ```bash
-clawdbot browser start
-clawdbot browser open https://x.com
+moltbot-cn browser start
+moltbot-cn browser open https://x.com
 ```
 
-If you have multiple profiles, pass `--browser-profile <name>` (the default is `clawd`).
+如果有多个配置文件，使用 `--browser-profile <名称>`（默认是 `clawd`）。
 
-## X/Twitter: recommended flow
+---
 
-- **Read/search/threads:** use the **bird** CLI skill (no browser, stable).
-  - Repo: https://github.com/steipete/bird
-- **Post updates:** use the **host** browser (manual login).
+## X/Twitter 推荐流程
 
-## Sandboxing + host browser access
+| 功能 | 推荐方式 |
+|------|----------|
+| **浏览/搜索/读取** | 使用 **bird** CLI 工具（无需浏览器，更稳定） |
+| **发布更新** | 使用 **host 浏览器**（手动登录后） |
 
-Sandboxed browser sessions are **more likely** to trigger bot detection. For X/Twitter (and other strict sites), prefer the **host** browser.
+> bird 仓库：https://github.com/steipete/bird
 
-If the agent is sandboxed, the browser tool defaults to the sandbox. To allow host control:
+---
+
+## 沙箱模式 + 主机浏览器访问
+
+沙箱模式的浏览器会话**更容易触发反机器人检测**。对于 X/Twitter 等严格网站，建议使用**主机浏览器**。
+
+如果 AI 助手在沙箱中运行，浏览器工具默认使用沙箱。要允许主机控制：
 
 ```json5
 {
@@ -58,10 +67,17 @@ If the agent is sandboxed, the browser tool defaults to the sandbox. To allow ho
 }
 ```
 
-Then target the host browser:
+然后指定主机浏览器：
 
 ```bash
-clawdbot browser open https://x.com --browser-profile clawd --target host
+moltbot-cn browser open https://x.com --browser-profile clawd --target host
 ```
 
-Or disable sandboxing for the agent that posts updates.
+或者禁用发帖代理的沙箱模式。
+
+---
+
+## 相关文档
+
+- [浏览器自动化](/tools/browser) - 主文档
+- [Chrome 扩展](/tools/chrome-extension) - 控制现有标签页

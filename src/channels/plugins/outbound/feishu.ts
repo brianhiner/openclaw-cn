@@ -14,10 +14,8 @@ export const feishuOutbound: ChannelOutboundAdapter = {
     };
   },
   sendMedia: async ({ to, text, mediaUrl, accountId }) => {
-    // TODO: Implement proper media upload
     const client = getFeishuClient(accountId ?? undefined);
-    const content = `${text ? text + "\n" : ""}${mediaUrl}`;
-    const result = await sendMessageFeishu(client, to, { text: content });
+    const result = await sendMessageFeishu(client, to, { text: text || "" }, { mediaUrl });
     return {
       channel: "feishu",
       messageId: result?.message_id || "unknown",

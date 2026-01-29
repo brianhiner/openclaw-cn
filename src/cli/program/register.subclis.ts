@@ -222,6 +222,14 @@ const entries: SubCliEntry[] = [
       mod.registerUpdateCli(program);
     },
   },
+  {
+    name: "feishu",
+    description: "飞书调试工具",
+    register: async (program) => {
+      const mod = await import("../../commands/feishu.js");
+      mod.registerFeishuCommand(program);
+    },
+  },
 ];
 
 function removeCommand(program: Command, command: Command) {

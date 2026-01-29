@@ -59,8 +59,10 @@ export async function monitorFeishuProvider(opts: MonitorFeishuOpts = {}): Promi
   });
 
   // Create event dispatcher
+  logger.info("Creating Feishu event dispatcher...");
   const eventDispatcher = new Lark.EventDispatcher({}).register({
     "im.message.receive_v1": async (data) => {
+      logger.info(`[feishu] Received im.message.receive_v1 event`);
       try {
         await processFeishuMessage(client, data, appId);
       } catch (err) {

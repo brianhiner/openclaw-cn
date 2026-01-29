@@ -11,15 +11,23 @@ export async function processFeishuMessage(client: Client, data: any, appId: str
   // We expect "im.message.receive_v1" event structure
   // https://open.feishu.cn/document/server-side-sdk/nodejs-sdk/handling-callbacks
 
+  logger.info(`[feishu] Received event: ${JSON.stringify(data).slice(0, 500)}`);
+
   const event = data.event;
   if (!event || !event.message) {
-    logger.warn("Received invalid Feishu event structure");
+    logger.warn(
+      `[feishu] Received invalid Feishu event structure: ${JSON.stringify(data).slice(0, 200)}`,
+    );
     return;
   }
 
   const message = event.message;
   const sender = event.sender;
   const chatId = message.chat_id;
+
+  logger.info(
+    `[feishu] Processing message: chatId=${chatId}, type=${message.message_type}, sender=${sender?.sender_id?.open_id}`,
+  );
 
   // Only handle text messages for now
   if (message.message_type !== "text") {

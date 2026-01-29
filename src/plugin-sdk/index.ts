@@ -376,6 +376,7 @@ export {
 } from "../feishu/accounts.js";
 export { feishuOutbound } from "../channels/plugins/outbound/feishu.js";
 export { normalizeFeishuTarget } from "../channels/plugins/normalize/feishu.js";
+export { probeFeishu, type FeishuProbe } from "../feishu/probe.js";
 
 // Media utilities
 export { loadWebMedia, type WebMediaResult } from "../web/media.js";

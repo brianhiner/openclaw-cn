@@ -123,7 +123,7 @@ async function installPluginFromPackageDir(params: {
   if (mode === "install" && (await fileExists(targetDir))) {
     return {
       ok: false,
-      error: `plugin already exists: ${targetDir} (delete it first)`,
+      error: `插件已存在: ${targetDir} (请先删除)`,
     };
   }
 
@@ -306,7 +306,7 @@ export async function installPluginFromFile(params: {
   const targetFile = path.join(extensionsDir, `${safeFileName(pluginId)}${path.extname(filePath)}`);
 
   if (mode === "install" && (await fileExists(targetFile))) {
-    return { ok: false, error: `plugin already exists: ${targetFile} (delete it first)` };
+    return { ok: false, error: `插件已存在: ${targetFile} (请先删除)` };
   }
 
   if (dryRun) {

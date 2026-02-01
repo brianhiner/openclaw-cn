@@ -6,6 +6,7 @@ Docs: https://docs.clawd.bot
 Status: unreleased.
 
 ### Changes
+- Models: add Volcengine (火山引擎) as model provider. (#18) Thanks @dragonforce2010.
 - Agents: honor tools.exec.safeBins in exec allowlist checks. (#2281)
 - Docs: tighten Fly private deployment steps. (#2289) Thanks @dguido.
 - Gateway: warn on hook tokens via query params; document header auth preference. (#2200) Thanks @YuriNachos.

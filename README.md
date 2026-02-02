@@ -9,17 +9,27 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/openclaw-cn"><img src="https://img.shields.io/npm/v/openclaw-cn?style=for-the-badge&logo=npm&logoColor=white&label=npm" alt="npm 版本"></a>
   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-%E2%89%A5%2022-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js 版本"></a>
-  <a href="https://github.com/nicekwell/openclaw-cn"><img src="https://img.shields.io/github/stars/nicekwell/openclaw-cn?style=for-the-badge&logo=github&label=Stars" alt="GitHub Stars"></a>
+  <a href="https://github.com/jiulingyun/openclaw-cn"><img src="https://img.shields.io/github/stars/jiulingyun/openclaw-cn?style=for-the-badge&logo=github&label=Stars" alt="GitHub Stars"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/许可证-MIT-blue.svg?style=for-the-badge" alt="MIT 许可证"></a>
 </p>
 
 <p align="center">
   <a href="https://clawd.org.cn">🌐 官网</a> ·
   <a href="https://clawd.org.cn/docs">📖 文档</a> ·
-  <a href="https://github.com/nicekwell/openclaw-cn/issues">💬 反馈</a>
+  <a href="https://github.com/jiulingyun/openclaw-cn/issues">💬 反馈</a>
 </p>
 
 ---
+
+## ⭐ Star 趋势
+
+<a href="https://star-history.com/#jiulingyun/openclaw-cn&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=jiulingyun/openclaw-cn&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=jiulingyun/openclaw-cn&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=jiulingyun/openclaw-cn&type=Date" />
+ </picture>
+</a>
 
 ## ✨ 特性
 

@@ -42,16 +42,28 @@ openclaw-cn gateway uninstall
 
 3) 删除状态 + 配置：
 
+**Linux / macOS：**
 ```bash
 rm -rf "${OPENCLAW_STATE_DIR:-$HOME/.openclaw}"
+```
+
+**Windows（PowerShell）：**
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.openclaw"
 ```
 
 如果你将 `OPENCLAW_CONFIG_PATH` 设置为状态目录之外的自定义位置，也删除该文件。
 
 4) 删除工作区（可选，删除 agent 文件）：
 
+**Linux / macOS：**
 ```bash
 rm -rf ~/clawd
+```
+
+**Windows（PowerShell）：**
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\clawd"
 ```
 
 5) 删除 CLI 安装（选择你使用的那个）：

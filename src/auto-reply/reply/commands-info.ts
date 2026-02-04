@@ -103,8 +103,10 @@ export const handleWhoamiCommand: CommandHandler = async (params, allowTextComma
     const handle = senderUsername.startsWith("@") ? senderUsername : `@${senderUsername}`;
     lines.push(`用户名: ${handle}`);
   }
-  if (params.ctx.ChatType === "group" && params.ctx.From) {
-    lines.push(`群组: ${params.ctx.From}`);
+  if (params.ctx.ChatType === "group") {
+    // Show group/chat ID - prefer To (chat destination) for channels like Feishu
+    const groupId = params.ctx.To ?? params.ctx.From;
+    if (groupId) lines.push(`群组 ID: ${groupId}`);
   }
   if (params.ctx.MessageThreadId != null) {
     lines.push(`话题: ${params.ctx.MessageThreadId}`);

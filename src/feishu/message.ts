@@ -1,8 +1,10 @@
 import type { Client } from "@larksuiteoapi/node-sdk";
+import { formatInboundEnvelope, resolveEnvelopeFormatOptions } from "../auto-reply/envelope.js";
 import { dispatchReplyWithBufferedBlockDispatcher } from "../auto-reply/reply/provider-dispatcher.js";
 import { parseTextCommand, getHelpMenuText, toSlashCommand } from "../channels/text-commands.js";
 import type { ClawdbotConfig } from "../config/config.js";
 import { loadConfig } from "../config/config.js";
+import { readSessionUpdatedAt, resolveStorePath } from "../config/sessions.js";
 import { logVerbose } from "../globals.js";
 import { getChildLogger } from "../logging.js";
 import { isSenderAllowed, normalizeAllowFromWithStore, resolveSenderAllowMatch } from "./access.js";
@@ -326,7 +328,27 @@ export async function processFeishuMessage(
     return;
   }
 
+  // Build sender label (similar to Telegram format)
   const senderName = sender?.sender_id?.user_id || "unknown";
+  const senderOpenId = sender?.sender_id?.open_id;
+  // For DM: use sender info as conversation label
+  // For group: use group title + id
+  const groupTitle = message.chat?.title || message.chat_type === "group" ? "Group" : undefined;
+  const conversationLabel = isGroup
+    ? `${groupTitle} id:${chatId}`
+    : senderOpenId
+      ? `${senderName} id:${senderOpenId}`
+      : senderName;
+
+  // Resolve envelope options and previous timestamp for elapsed time
+  const envelopeOptions = resolveEnvelopeFormatOptions(cfg);
+  const storePath = resolveStorePath(cfg.session?.store, {
+    agentId: route.agentId,
+  });
+  const previousTimestamp = readSessionUpdatedAt({
+    storePath,
+    sessionKey: route.sessionKey,
+  });
 
   // Resolve reply-to mode for group chats
   // In group chats, we quote the original message to provide context
@@ -346,16 +368,31 @@ export async function processFeishuMessage(
   let streamingStarted = false;
   let lastPartialText = "";
 
+  // Format body with standardized envelope (consistent with Telegram/WhatsApp)
+  const formattedBody = formatInboundEnvelope({
+    channel: "Feishu",
+    from: conversationLabel,
+    timestamp: message.create_time ? Number(message.create_time) * 1000 : undefined,
+    body: bodyText,
+    chatType: isGroup ? "group" : "direct",
+    sender: {
+      name: senderName,
+      id: senderOpenId || senderId,
+    },
+    previousTimestamp,
+    envelope: envelopeOptions,
+  });
+
   // Context construction
   const ctx = {
-    Body: bodyText,
+    Body: formattedBody,
     RawBody: text || media?.placeholder || "",
     From: senderId,
     To: chatId,
     SessionKey: route.sessionKey,
     SenderId: senderId,
     SenderName: senderName,
-    ChatType: isGroup ? "group" : "dm",
+    ChatType: isGroup ? "group" : "direct",
     Provider: "feishu",
     Surface: "feishu",
     Timestamp: Number(message.create_time),

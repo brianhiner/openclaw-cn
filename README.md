@@ -1,9 +1,9 @@
-# 🧞 Openclaw 中文版
+# 🧞 Openclaw 中文社区
 
 **私有化部署的 AI 智能助手，完整中文本地化。**
 
 <p align="center">
-  <img src="docs/images/main-view.png" alt="Openclaw 中文版控制界面" width="800">
+  <img src="docs/images/main-view.png" alt="Openclaw 中文社区控制界面" width="800">
 </p>
 
 <p align="center">

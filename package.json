@@ -1,7 +1,7 @@
 {
   "name": "openclaw-cn",
   "version": "0.1.0",
-  "description": "Openclaw 中文版 - WhatsApp gateway CLI (Baileys web) with Pi RPC agent",
+  "description": "Openclaw 中文社区 - WhatsApp gateway CLI (Baileys web) with Pi RPC agent",
   "repository": {
     "type": "git",
     "url": "https://github.com/jiulingyun/openclaw-cn"

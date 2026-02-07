@@ -6,6 +6,7 @@ import type { RuntimeEnv } from "../runtime.js";
 import { resolveFeishuAccount } from "./accounts.js";
 import { resolveFeishuConfig } from "./config.js";
 import { processFeishuMessage } from "./message.js";
+import { probeFeishu } from "./probe.js";
 
 const logger = getChildLogger({ module: "feishu-monitor" });
 
@@ -46,6 +47,18 @@ export async function monitorFeishuProvider(opts: MonitorFeishuOpts = {}): Promi
 
   const log = opts.runtime?.log ?? console.log;
 
+  // Fetch bot info to get bot's open_id for @mention detection
+  let botOpenId: string | undefined;
+  try {
+    const probeResult = await probeFeishu(appId, appSecret);
+    if (probeResult.ok && probeResult.bot?.openId) {
+      botOpenId = probeResult.bot.openId;
+      logger.info(`Feishu bot open_id: ${botOpenId}`);
+    }
+  } catch (err) {
+    logger.warn(`Failed to fetch bot info for @mention detection: ${err}`);
+  }
+
   // Create Lark client for API calls
   const client = new Lark.Client({
     appId,
@@ -80,6 +93,7 @@ export async function monitorFeishuProvider(opts: MonitorFeishuOpts = {}): Promi
           resolvedConfig: feishuCfg,
           credentials: { appId, appSecret },
           botName: account.name,
+          botOpenId,
         });
       } catch (err) {
         logger.error(`Error processing Feishu message: ${String(err)}`);

@@ -12,6 +12,7 @@ export type FeishuProbe = {
     appId?: string | null;
     appName?: string | null;
     avatarUrl?: string | null;
+    openId?: string | null;
   };
 };
 
@@ -104,6 +105,7 @@ export async function probeFeishu(
       appId: appId,
       appName: botJson.bot?.app_name ?? null,
       avatarUrl: botJson.bot?.avatar_url ?? null,
+      openId: botJson.bot?.open_id ?? null,
     };
     result.elapsedMs = Date.now() - started;
     return result;

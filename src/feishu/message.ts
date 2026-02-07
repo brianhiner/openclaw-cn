@@ -32,6 +32,18 @@ const logger = getChildLogger({ module: "feishu-message" });
 // - post: rich text (may contain document links)
 const SUPPORTED_MSG_TYPES = ["text", "post", "image", "file", "audio", "media", "sticker"];
 
+/** Feishu mention structure from SDK */
+export type FeishuMention = {
+  key?: string;
+  id?: {
+    union_id?: string;
+    user_id?: string;
+    open_id?: string;
+  };
+  name?: string;
+  tenant_key?: string;
+};
+
 export type ProcessFeishuMessageOptions = {
   cfg?: ClawdbotConfig;
   accountId?: string;
@@ -40,6 +52,8 @@ export type ProcessFeishuMessageOptions = {
   credentials?: { appId: string; appSecret: string };
   /** Bot name for streaming card title (optional, defaults to no title) */
   botName?: string;
+  /** Bot's own open_id for @mention detection in groups */
+  botOpenId?: string;
 };
 
 export async function processFeishuMessage(
@@ -196,8 +210,12 @@ export async function processFeishuMessage(
   }
 
   // Handle @mentions for group chats
-  const mentions = message.mentions ?? data.mentions ?? [];
-  const wasMentioned = mentions.length > 0;
+  const mentions: FeishuMention[] = message.mentions ?? data.mentions ?? [];
+  const botOpenId = options.botOpenId;
+  // Check if the bot itself was mentioned, not just any @mention
+  const wasMentioned = botOpenId
+    ? mentions.some((m) => m.id?.open_id === botOpenId)
+    : mentions.length > 0; // Fallback if botOpenId not available
 
   // In group chat, check requireMention setting
   if (isGroup) {

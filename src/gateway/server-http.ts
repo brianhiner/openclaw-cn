@@ -311,7 +311,45 @@ export function createGatewayHttpServer(opts: {
  * - Empty origin (non-browser clients) is allowed
  * - All other origins are rejected
  */
-function isValidWebSocketOrigin(req: IncomingMessage): boolean {
+function isValidWebSocketOrigin(req: IncomingMessage, config?: GatewayConfig): boolean {    const origin = req.headers.origin;
+  
+    // Non-browser clients may not send Origin header - allow
+    if (origin === undefined || origin === "") return true;
+  
+    // Some browsers send "null" for file:// or privacy mode - allow for local access
+    if (origin === "null") return true;
+  
+    try {
+          const parsed = new URL(origin);
+          const hostname = parsed.hostname.toLowerCase();
+      
+          // Allow localhost and loopback addresses
+          if (hostname === "localhost") return true;
+          if (hostname === "127.0.0.1") return true;
+          if (hostname === "::1") return true;
+          if (hostname.startsWith("127.")) return true;
+      
+          // Allow Tailscale serve domains
+          if (hostname.endsWith(".ts.net")) return true;
+
+          // Check configured allowedOrigins
+          if (config?.gateway?.controlUi?.allowedOrigins) {
+                  const allowedOrigins = config.gateway.controlUi.allowedOrigins;
+                  if (Array.isArray(allowedOrigins)) {
+                            for (const allowed of allowedOrigins) {
+                                        const normalizedAllowed = allowed.replace(/\/$/, "");
+                                        const normalizedOrigin = origin.replace(/\/$/, "");
+                                        if (normalizedOrigin === normalizedAllowed) {
+                                                      return true;
+                                        }
+                            }
+                  }
+          }
+      
+          return false;
+    } catch {
+          return false;
+    }function isValidWebSocketOrigin(req: IncomingMessage): boolean {
   const origin = req.headers.origin;
 
   // Non-browser clients may not send Origin header - allow
@@ -352,8 +390,7 @@ export function attachGatewayUpgradeHandler(opts: {
 
     // Security: Validate Origin header to prevent CSWSH attacks
     // See CVE: GHSA-g8p2-7wf7-98mq
-    if (!isValidWebSocketOrigin(req)) {
-      socket.write("HTTP/1.1 403 Forbidden\r\n\r\n");
+  if (!isValidWebSocketOrigin(req, opts.gatewayConfig)) {      socket.write("HTTP/1.1 403 Forbidden\r\n\r\n");
       socket.destroy();
       return;
     }

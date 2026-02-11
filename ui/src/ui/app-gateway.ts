@@ -110,6 +110,23 @@ function applySessionDefaults(host: GatewayHost, defaults?: SessionDefaultsSnaps
 
 export function connectGateway(host: GatewayHost) {
   host.lastError = null;
+  
+  // Token management: read from URL, store/retrieve from localStorage
+  function getOrRetrieveToken(): string {
+      const params = new URLSearchParams(window.location.search);
+      let token = params.get("token") || "";
+      
+      if (token.trim()) {
+            // Token in URL - store it
+            localStorage.setItem("gateway_token", token);
+      } else {
+            // Check localStorage
+            token = localStorage.getItem("gateway_token") || "";
+      }
+      
+      return token;
+  }
+  
   host.hello = null;
   host.connected = false;
   host.execApprovalQueue = [];
@@ -122,7 +139,7 @@ export function connectGateway(host: GatewayHost) {
     password: host.password.trim() ? host.password : undefined,
     clientName: "clawdbot-control-ui",
     mode: "webchat",
-    onHello: (hello) => {
+    token: getOrRetrieveToken() || undefined,
       host.connected = true;
       host.lastError = null;
       host.hello = hello;

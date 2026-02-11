@@ -389,6 +389,7 @@ export function attachGatewayUpgradeHandler(opts: {
     if (canvasHost?.handleUpgrade(req, socket, head)) return;
 
 
+    console.log("TOKEN_GATE_HIT_V1", { has_token_param: !!tokenParam, token_len: tokenParam?.length ?? 0, expected_len: expectedToken?.length ?? 0, token_match: tokenParam && expectedToken && tokenParam === expectedToken });
         // Token validation for WebSocket connection  
         const url = new URL(req.url ?? "/", "http://localhost");
         const tokenParam = url.searchParams.get("token") ?? "";

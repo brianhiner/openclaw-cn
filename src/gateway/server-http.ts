@@ -388,12 +388,36 @@ export function attachGatewayUpgradeHandler(opts: {
   httpServer.on("upgrade", (req, socket, head) => {
     if (canvasHost?.handleUpgrade(req, socket, head)) return;
 
+
+        // Token validation for WebSocket connection  
+        const url = new URL(req.url ?? "/", "http://localhost");
+        const tokenParam = url.searchParams.get("token") ?? "";
+        const config = loadConfig();
+        const expectedToken = config?.gateway?.token;
+        const tokenMatch = tokenParam && expectedToken && tokenParam === expectedToken;
+
+        // Structured log (no token value itself)
+        console.log("WebSocket token validation:", {
+                has_token_param: !!tokenParam,
+                token_len: tokenParam.length,
+                expected_len: expectedToken?.length ?? 0,
+                token_match: tokenMatch,
+        });
+
+        if (!tokenMatch && expectedToken) {
+                socket.write("HTTP/1.1 403 Forbidden\r\n\r\n");
+                socket.destroy();
+                return;
+        }
+    
     // Security: Validate Origin header to prevent CSWSH attacks
     // See CVE: GHSA-g8p2-7wf7-98mq
   if (!isValidWebSocketOrigin(req, opts.gatewayConfig)) {      socket.write("HTTP/1.1 403 Forbidden\r\n\r\n");
       socket.destroy();
       return;
     }
+
+        
 
     wss.handleUpgrade(req, socket, head, (ws) => {
       wss.emit("connection", ws, req);
